@@ -73,7 +73,7 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;padding:2em 1em 3em}
 </head>
 <body>
 <header>
-  <div class="brand"><h1>🧬 BIO101 4 my future nurse</h1><span class="tag">Unofficial, made with love</span></div>
+  <div class="brand"><h1>🧬 BIO101 4 my future nurse</h1><span class="tag">Made with love</span></div>
   <nav id="nav"></nav>
 </header>
 <main id="main"></main>
@@ -204,10 +204,10 @@ L("u3-30","u3","sf",3,"Bulk transport","Describe three ways a cell can bring in 
 ];
 NEWQ.forEach(q=>q.n=1);QUESTIONS.push(...NEWQ);
 const CHEER={
-perfect:["A perfect score! 🎉💖 Every single point is yours, and I could not be prouder of you.","100%! 🥳 All that studying paid off in the best way. I am so proud of you, my love.","Flawless! 🧬✨ You knew all of it. Go celebrate, you earned this one!","Perfect! 🎊 Look at you go. I am cheering the loudest right now."],
-high:["So close, love, and what a strong result. 💖 A few points left to polish.","Beautiful work, baby. I am proud of you. Have a look at the topics below and keep going.","You are doing really well. 🌟 The small gaps are simply the next things to learn."],
-mid:["An error does not define you, baby. Every one of these is a chance to learn something. 💕","You are making real progress, and I see how hard you work. Next time will go even better.","I am rooting for you, always. Let us take the topics below one at a time. 🌱"],
-low:["This is just one practice run, and it does not define you, baby. I believe in you completely. 💗","Hard topics take time, and you are putting in the time. I am rooting for you, and you will get it next time.","Be gentle with yourself today, love. Mistakes in practice are exactly how learning happens. 🤍"]};
+perfect:["A perfect score, baby! You did such a good job. Every single point is yours, and I could not be prouder of you.","100%! LOOK! All that studying paid off in the best way. I am so proud of you, my love.","I TOLD YOU! You knew all of it. I hope you're proud of yourself, you did such a great job","PERFECT, MY PRETTY GIRL! Look at you go. I am cheering the loudest right now."],
+high:["What a strong result, baby! Just a few points left to polish.","BEAUTIFUL WORK, BABY! I am proud of you. Take a look at the topics below and keep going.","You're doing super duper well! The small little gaps are simply the next things to focus on."],
+mid:["An error does not define you, baby. I'm proud of you, let's keep working!","You are making real progress, baby! And I see how hard you work. Next time will go even better.","I am rooting for you, baby, always. Let us take the topics below one at a time."],
+low:["This was a hard one, let's keep studying together, baby. I believe in you completely.","Hard topics take time, and you are putting in the time. I am rooting for you, and I love you.","Be gentle with yourself today, love. Mistakes in practice are exactly how learning happens."]};
 function cheer(a){const p=Math.round(100*a.score/a.total),k=p===100?"perfect":p>=80?"high":p>=60?"mid":"low",arr=CHEER[k];let h=0;for(const ch of a.date)h=(h*31+ch.charCodeAt(0))>>>0;
 const weak=Object.entries(a.byTopic||{}).filter(([t,s])=>s.correct<s.total).sort((x,y)=>pctOf(x[1])-pctOf(y[1])).slice(0,3).map(([t,s])=>`${t} (${s.correct}/${s.total} points)`);
 return `<div class="cheer${p===100?" big":""}" role="status"><b>${p===100?"Perfect score!":"A note for you"}</b>${arr[h%arr.length]}${weak.length?`<br><span style="font-size:.9rem">To review next: ${weak.join("; ")}.</span>`:""}</div>`;}
@@ -613,7 +613,7 @@ function viewReview(){
 
 // ---------- results ----------
 function viewResultsOld(){
-  if(!attempts.length)return `<div class="card"><h2>Results</h2><p class="empty">No attempts yet. Take a practice test to start tracking your progress.</p><button class="btn" data-go="setup">Start a practice test</button></div>`;
+  if(!attempts.length)return `<div class="card"><h2>Results</h2><p class="empty">No attempts yet. Take a practice test to start tracking your progress, love.</p><button class="btn" data-go="setup">Start a practice test</button></div>`;
   const unitAgg={};
   attempts.forEach(a=>Object.entries(a.byUnit).forEach(([u,s])=>{unitAgg[u]=unitAgg[u]||{correct:0,total:0};unitAgg[u].correct+=s.correct;unitAgg[u].total+=s.total;}));
   return `<div class="card">
@@ -641,7 +641,7 @@ function viewAbout(){
     <p>This is an independent, student-made study resource organized around a publicly listed set of BIO 101 (General Biology I) topics and learning goals. It is <strong>not produced, reviewed, or endorsed by NOVA</strong>, and no questions or text are copied from any NOVA course materials - every question and explanation here was written from scratch for this project.</p>
     <h3>Scope and assumptions</h3>
     <p>The question bank covers a representative sample of each of the five units (Overview of Biology, Chemistry of Life, The Cell, Molecular Biology &amp; Genetics, and Evolution) rather than every possible subtopic, so it should be used alongside your actual course materials, not as a replacement for them. Matching questions assume a one-to-one pairing between the terms shown. Short-answer questions are open-ended, so they are self-graded: you compare your own answer to a model answer rather than receiving automatic scoring.</p>
-    <h3>Why this site exists</h3><p>I made this website to assist my girlfriend with her BIO101 course preparation. She is a lovely, hardworking, and attractive girl. She is also the greatest supporting character in Marvel Rivals (2%). This website exists because I want to help her achieve her goal of becoming a nurse. Alenah, I adore you.</p><h3>Class notes</h3><p>Questions marked "Class notes topic" follow subjects in photos of notes taken in class (carbon and functional groups, polarity and pH, membrane transport, thermodynamics, and enzymes), supplied as a user-provided reference. Only the readable parts were used, and the questions are original. Class notes and study guides are user-provided materials, not official NOVA content.</p><h3>Alignment with the course</h3><p><strong>Study references:</strong> this update also draws on two documents supplied by the site owner, a practice midterm and a study guide for a Spring 2025 section. They were used only as references for topics, point values, and the mix of multiple-choice, short-answer, and long-answer formats. They are user-provided references, not official course materials, and course content can vary by instructor and semester.</p><p>Every question is tagged by unit, topic, and core competency, with topics matching the objectives in the publicly listed course scope. All questions are original and are not official NOVA questions. No question text or substantial wording from the supplied documents is reused here.</p><h3>How it works</h3>
+    <h3>Why this site exists</h3><p>I made this website to assist my girlfriend with her BIO101 course preparation. She is a lovely, hardworking, and beautiful girl (I'm super lucky). She is also the best support in Marvel Rivals (2%). This website exists because I want to help her achieve her goal of becoming a nurse. I love you, baby.</p><h3>Alignment with the course</h3><p><strong>Study references:</strong> this update also draws on two documents supplied by me, a practice exams and study guides. They were used only as references for topics, point values, and the mix of multiple-choice, short-answer, and long-answer formats.</p><p>Every question is tagged by unit, topic, and core competency, with topics matching the objectives in the publicly listed course scope.<h3>How it works</h3>
     <p>This is a single, self-contained web page - there is nothing to install and no server is required. All of your bookmarks, missed questions, and test history are stored only in this browser's local storage, which means your progress stays on this device and is not sent anywhere. Clearing your browser data will reset your history.</p>
   </div>`;
 }
