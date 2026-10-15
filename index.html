@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BIO 101 Study Hub (Unofficial)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&display=swap">
+<style>
+:root{
+  --bg:#F7F8F2;--surface:#FFFFFF;--text:#182619;--muted:#55624E;--border:#D7DCC9;
+  --accent:#2F6B4F;--accent-ink:#163826;--amber:#B9793A;--good:#2F6B4F;--bad:#A8432F;--rad:6px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#10140D;--surface:#171C13;--text:#E9EDE2;--muted:#A7B29B;--border:#2B331F;
+    --accent:#6FB98B;--accent-ink:#DCEBDF;--amber:#D9A05C;--good:#6FB98B;--bad:#E08A6E;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#10140D;--surface:#171C13;--text:#E9EDE2;--muted:#A7B29B;--border:#2B331F;
+  --accent:#6FB98B;--accent-ink:#DCEBDF;--amber:#D9A05C;--good:#6FB98B;--bad:#E08A6E;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+h1,h2,h3{font-family:Lora,Georgia,serif;font-weight:600;margin:0 0 .4em;color:var(--text)}
+h1{font-size:1.5rem}h2{font-size:1.2rem}h3{font-size:1.02rem}
+p{margin:.3em 0 .8em;max-width:62ch}
+a{color:var(--accent)}
+header{position:sticky;top:env(safe-area-inset-top,0px);background:var(--surface);border-bottom:1px solid var(--border);z-index:5}
+.brand{display:flex;align-items:center;gap:.5em;padding:.7em 1em .2em;max-width:760px;margin:0 auto}
+.brand span.tag{font-size:.72rem;color:var(--muted);border:1px solid var(--border);border-radius:99px;padding:.1em .6em}
+nav{display:flex;gap:.2em;overflow-x:auto;padding:.3em .6em .5em;max-width:760px;margin:0 auto}
+nav button{background:none;border:none;color:var(--muted);padding:.5em .8em;border-radius:var(--rad);font-size:.92rem;cursor:pointer;white-space:nowrap}
+nav button.active{background:var(--accent);color:var(--bg)}
+nav button:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+main{max-width:760px;margin:0 auto;padding:1.2em 1em 3em}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rad);padding:1em;margin-bottom:1em}
+.row{display:flex;flex-wrap:wrap;gap:.6em;align-items:center}
+.btn{background:var(--accent);color:var(--bg);border:none;border-radius:var(--rad);padding:.55em 1.1em;font-size:.95rem;cursor:pointer}
+.btn.secondary{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+.btn.ghost{background:transparent;color:var(--muted);border:1px solid var(--border)}
+select,input[type=number],textarea{background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:var(--rad);padding:.45em .6em;font-size:.92rem;font-family:inherit}
+textarea{width:100%;min-height:4.5em;resize:vertical}
+label.inline{font-size:.88rem;color:var(--muted);display:flex;align-items:center;gap:.35em}
+.meta{font-size:.82rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:.5em;margin-bottom:.6em}
+.meta span{border:1px solid var(--border);border-radius:99px;padding:.08em .65em}
+.opt{display:block;border:1px solid var(--border);border-radius:var(--rad);padding:.55em .7em;margin:.4em 0;cursor:pointer}
+.opt:hover{border-color:var(--accent)}
+.opt input{margin-right:.5em}
+.opt.correct{border-color:var(--good);background:color-mix(in srgb, var(--good) 12%, var(--surface))}
+.opt.wrong{border-color:var(--bad);background:color-mix(in srgb, var(--bad) 12%, var(--surface))}
+table{border-collapse:collapse;width:100%;margin:.6em 0;font-size:.92rem}
+th,td{border:1px solid var(--border);padding:.4em .6em;text-align:left}
+.bar-row{display:flex;align-items:center;gap:.6em;margin:.4em 0}
+.bar-track{flex:1;background:var(--border);border-radius:99px;height:10px;overflow:hidden}
+.bar-fill{height:100%;background:var(--accent)}
+.progresswrap{margin-bottom:1em}
+.progress-track{background:var(--border);border-radius:99px;height:8px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);transition:width .25s}
+footer{text-align:center;color:var(--muted);font-size:.8rem;padding:2em 1em 3em}
+.explain{background:var(--bg);border:1px dashed var(--border);border-radius:var(--rad);padding:.7em;margin-top:.6em;font-size:.92rem}
+.hidden{display:none !important}
+.bookmark{background:none;border:none;cursor:pointer;font-size:1.1rem;color:var(--muted)}
+.bookmark.on{color:var(--amber)}
+.empty{color:var(--muted);font-style:italic}
+.trend{display:flex;align-items:flex-end;gap:.4em;height:150px;margin:.8em 0;border-bottom:1px solid var(--border)}.tcol{flex:1;max-width:48px;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;font-size:.75rem;color:var(--muted)}.tcol div{width:100%;background:var(--accent);border-radius:3px 3px 0 0;min-height:2px}small{font-weight:400;color:var(--muted);font-size:.8rem}.cheer{border-left:4px solid var(--amber);background:var(--bg);padding:.7em .9em;border-radius:var(--rad);margin:.6em 0}.cheer b{display:block;margin-bottom:.2em}.cheer.big{font-size:1.15rem;border-left-width:6px;animation:pop .6s ease-out}@keyframes pop{0%{transform:scale(.96)}60%{transform:scale(1.03)}100%{transform:scale(1)}}@media(prefers-reduced-motion:reduce){.cheer.big{animation:none}}@media(max-width:480px){h1{font-size:1.3rem}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><h1>🧬 BIO 101 Study Hub</h1><span class="tag">Unofficial, made with love</span></div>
+  <nav id="nav"></nav>
+</header>
+<main id="main"></main>
+<footer>Made with love to help my girlfriend with BIO 101. Independent study resource aligned to a public BIO 101 topic list. Not produced, reviewed, or endorsed by NOVA. Original questions and explanations only. See the About page for scope notes.</footer>
+<script>
+const UNITS={u1:"Overview of Biology",u2:"Chemistry of Life",u3:"The Cell",u4:"Molecular Biology & Genetics",u5:"Evolution"};
+const COMP={pos:"Process of Science",em:"Energy & Matter",info:"Information Flow",evo:"Evolution",sf:"Structure & Function",sys:"Systems Biology"};
+const DIFF={1:"Intro",2:"Core",3:"Challenge"};
+
+const QUESTIONS=[
+{id:"u1-1",u:"u1",c:"pos",d:1,ty:"mc",q:"A student notices that plants near a sunny window grow taller than plants kept in the center of a dim room. Which statement below is an observation rather than a hypothesis?",options:["Plants grow taller because they receive more light.","Plants near the window are taller than plants in the center of the room.","Increasing light exposure will increase plant height.","If a plant receives more light, then it will grow taller."],a:1,e:"An observation is a recorded fact about what was seen. The other three options all propose an explanation (a hypothesis) for why the pattern exists."},
+{id:"u1-2",u:"u1",c:"sf",d:1,ty:"ms",q:"Which of the following are characteristics shared by essentially all living things? Select all that apply.",options:["Response to stimuli","Organization into one or more cells","Having a nervous system","Growth and development over time","Capacity to reproduce","Carrying out photosynthesis"],a:[0,1,3,4],e:"All life is organized into cells, responds to stimuli, grows/develops, and reproduces. A nervous system and photosynthesis are traits of some organisms, not a universal requirement for life."},
+{id:"u1-3",u:"u1",c:"sys",d:2,ty:"match",q:"Match each domain of life to an example that belongs to it.",left:["Bacteria","Archaea","Eukarya"],options:["A skin bacterium that lacks a nucleus","An organism that thrives in a near-boiling hot spring, with distinct membrane chemistry","A sunflower, made of cells with a true nucleus"],a:[0,1,2],e:"Bacteria and Archaea are both prokaryotic domains but differ in cell chemistry and evolutionary history; Archaea often live in extreme environments. Eukarya includes all organisms whose cells have a true, membrane-bound nucleus."},
+{id:"u1-4",u:"u1",c:"pos",d:3,ty:"sa",data:true,table:{h:["Fertilizer (g/L)","Avg. height after 4 weeks (cm)"],r:[["0","12"],["1","15"],["2","19"],["3","22"],["4","21"]]},q:"Five groups of tomato plants received 0 to 4 g/L of fertilizer, with every other condition held constant. Using the data, predict what might happen at 5 g/L if the trend from 3 to 4 g/L continued, and explain your reasoning in a sentence or two.",a:"Height likely drops further (toward ~18-19 cm or lower), because growth increased up to 3 g/L but already declined slightly at 4 g/L - a sign that fertilizer is becoming harmful (over-fertilization) rather than helpful beyond a certain concentration.",e:"Model answer shown above - compare your reasoning, do not just check the number."},
+
+{id:"u2-1",u:"u2",c:"sf",d:1,ty:"mc",q:"An atom of carbon-14 differs from an atom of carbon-12 in which way?",options:["Number of protons","Number of neutrons","Number of electrons","Net electric charge"],a:1,e:"Isotopes of the same element always share the same number of protons (that is what defines the element) but differ in neutron number, which changes atomic mass."},
+{id:"u2-2",u:"u2",c:"sf",d:2,ty:"ms",q:"Which statements correctly describe covalent or hydrogen bonds? Select all that apply.",options:["Covalent bonds involve sharing a pair of electrons between atoms.","Ionic bonds involve a complete transfer of electrons from one atom to another.","A hydrogen bond is a weak attraction between a partially positive hydrogen and a nearby electronegative atom such as O or N.","Covalent bonds form exclusively between a metal and a nonmetal."],a:[0,2],e:"Statement 2 describes ionic, not covalent, bonding, and statement 4 is also a description of ionic bonding (metal-nonmetal), not covalent bonding (typically nonmetal-nonmetal)."},
+{id:"u2-3",u:"u2",c:"em",d:2,ty:"mc",data:true,table:{h:["Form of water","Density (g/mL, near 0C)"],r:[["Ice (solid)","0.92"],["Liquid water","1.00"]]},q:"Based on the densities shown, which property of water best explains why lakes freeze from the top down, allowing fish to survive underneath in winter?",options:["High specific heat capacity","Strong cohesion between molecules","Ice being less dense than liquid water, so it floats","High surface tension"],a:2,e:"Because ice is less dense than liquid water, it floats and forms an insulating layer at the surface, while liquid water (and the life in it) remains below."},
+{id:"u2-4",u:"u2",c:"info",d:2,ty:"match",q:"Match each macromolecule class to its basic building block.",left:["Proteins","Nucleic acids (DNA/RNA)","Carbohydrates","Lipids"],options:["Amino acids","Nucleotides","Monosaccharides (simple sugars)","Fatty acids and glycerol"],a:[0,1,2,3],e:"Each class of macromolecule is built from a characteristic small unit that is linked together (often by dehydration synthesis) to form larger polymers or complex molecules."},
+
+{id:"u3-1",u:"u3",c:"sf",d:1,ty:"mc",q:"Which feature is found in prokaryotic cells but, unlike in eukaryotic cells, is not enclosed by its own membrane?",options:["The nucleoid region where DNA is located","The nucleus","A mitochondrion","The endoplasmic reticulum"],a:0,e:"Prokaryotes lack a membrane-bound nucleus; their DNA is concentrated in a region called the nucleoid, which has no surrounding membrane. Eukaryotes keep DNA inside a true, membrane-bound nucleus."},
+{id:"u3-2",u:"u3",c:"sf",d:3,ty:"mc",data:true,table:{h:["Solution","Red blood cell volume change at 10 min"],r:[["Hypertonic saline","-18%"],["Isotonic saline","0%"],["Hypotonic saline","+22% (approaching lysis)"]]},q:"In the hypotonic solution, water primarily moves...",options:["out of the cell, by osmosis","into the cell, by osmosis","into the cell, by active transport","out of the cell, by facilitated diffusion of water"],a:1,e:"A hypotonic solution has a lower solute concentration outside the cell than inside, so water moves into the cell by osmosis, increasing cell volume and risking lysis (bursting)."},
+{id:"u3-3",u:"u3",c:"em",d:2,ty:"ms",q:"Which of the following are steps that occur during aerobic cellular respiration?",options:["Glycolysis in the cytoplasm","The Krebs cycle in the mitochondrial matrix","Light-dependent reactions in the thylakoid membrane","The electron transport chain in the inner mitochondrial membrane","The Calvin cycle in the stroma"],a:[0,1,3],e:"Light-dependent reactions and the Calvin cycle are stages of photosynthesis, which happens in chloroplasts, not stages of cellular respiration."},
+{id:"u3-4",u:"u3",c:"sys",d:2,ty:"sa",q:"Describe one key difference between mitosis and meiosis in terms of how many daughter cells are produced and how their genetic content compares to the parent cell.",a:"Mitosis produces two daughter cells that are genetically identical to the parent cell (same chromosome number, used for growth/repair). Meiosis produces four daughter cells with half the chromosome number of the parent (haploid gametes), and these cells are genetically varied due to crossing over and independent assortment.",e:"Model answer shown above."},
+
+{id:"u4-1",u:"u4",c:"info",d:1,ty:"mc",q:"According to the central dogma of molecular biology, genetic information generally flows in which direction?",options:["Protein to RNA to DNA","DNA to RNA to protein","RNA to protein to DNA","Protein to DNA to RNA"],a:1,e:"The central dogma describes transcription (DNA to RNA) followed by translation (RNA to protein). Some exceptions exist, such as reverse transcription in certain viruses, but this is the general flow."},
+{id:"u4-2",u:"u4",c:"info",d:2,ty:"ms",q:"Which statements about DNA replication are correct?",options:["It is semiconservative: each new double helix has one original strand and one newly made strand.","DNA polymerase synthesizes new strands only in the 5' to 3' direction.","Replication occurs during the G1 phase of the cell cycle.","A short RNA primer is needed before DNA polymerase can begin synthesizing a new strand."],a:[0,1,3],e:"DNA replication occurs during S phase, not G1. Replication is semiconservative, DNA polymerase only extends strands 5' to 3', and primers are required to start synthesis."},
+{id:"u4-3",u:"u4",c:"info",d:2,ty:"mc",data:true,table:{h:["Cross","Expected phenotype ratio"],r:[["Tt x Tt (T = tall, dominant; t = short, recessive)","3 tall : 1 short"]]},q:"A cross between two heterozygous (Tt) pea plants produces 160 offspring. Based on the expected Mendelian ratio, about how many offspring should be short?",options:["40","80","120","160"],a:0,e:"A Tt x Tt cross is expected to produce offspring in a 3:1 ratio of tall to short. One quarter of 160 is 40, the expected number of short offspring."},
+{id:"u4-4",u:"u4",c:"info",d:3,ty:"sa",q:"A new technique lets scientists edit a specific DNA sequence inside living cells. Based on the relationship between DNA sequence and protein structure, predict one possible downstream effect of successfully editing a gene's coding sequence, and explain your reasoning.",a:"Changing the DNA coding sequence can change the mRNA codons produced during transcription, which can change the amino acid sequence made during translation. This could alter the resulting protein's shape and function (for better or worse), which in turn could change a cell's or organism's traits, since the central dogma links DNA sequence to protein structure.",e:"Model answer shown above."},
+
+{id:"u5-1",u:"u5",c:"evo",d:1,ty:"mc",q:"Natural selection acts most directly on which of the following?",options:["An individual's genotype, independent of any outward trait","An individual's observable traits (phenotype), through survival and reproduction","A population's gene pool, with no connection to individual traits","The structure of the genetic code (the codon table) itself"],a:1,e:"Selection acts on phenotypes, the traits that affect an individual's survival and reproductive success. Because phenotypes are often influenced by genotype, differential reproduction can shift allele frequencies in the population over generations."},
+{id:"u5-2",u:"u5",c:"evo",d:2,ty:"match",q:"Match each type of evidence for evolution to a matching example.",left:["Comparative anatomy","Molecular evidence","Fossil record","Biogeography"],options:["Similar bone arrangements (e.g., forelimbs) that serve different functions across related species","Similarities in DNA or protein sequences among related species","A series of transitional fossils showing gradual change in a lineage over time","Closely related species found on nearby islands but not on distant, unconnected ones"],a:[0,1,2,3],e:"Each of these four evidence types independently supports common descent and change over time, and they are often strongest when considered together."},
+{id:"u5-3",u:"u5",c:"evo",d:3,ty:"mc",data:true,table:{h:["Generation","% of population with resistant allele"],r:[["1","5%"],["2","9%"],["3","18%"],["4","34%"],["5","52%"]]},q:"A pesticide is introduced to a beetle population, and the resistant allele is tracked over five generations as shown. This pattern is best explained by...",options:["Genetic drift acting randomly on allele frequency","Natural selection favoring resistant beetles after pesticide exposure","Gene flow from a separate, unexposed population","A sudden increase in mutation rate"],a:1,e:"The steady, directional increase in a trait (resistance) that is clearly advantageous after a specific environmental change (the pesticide) is the signature of natural selection, not random drift, gene flow, or a mutation spike."},
+{id:"u5-4",u:"u5",c:"pos",d:3,ty:"sa",q:"A news article claims a single new fossil discovery fully disproves evolution by natural selection. Evaluate this claim: what questions would you ask to assess its credibility, accuracy, and potential bias before accepting it?",a:"Useful questions include: Was this published in a peer-reviewed scientific journal, or only reported in media? Do other scientists in the field agree with this interpretation, or is it a single contested claim? Does the article explain the actual evidence, or just assert a conclusion? Could the source have a bias or motive for overstating the finding? One fossil rarely overturns a theory supported by many independent lines of evidence (genetics, anatomy, observed selection, etc.), so an extraordinary claim needs strong, well-corroborated evidence.",e:"Model answer shown above."}
+];
+
+const TOPICS={"u1-1":"Scientific method & variables","u1-2":"Characteristics of life","u1-3":"Levels of organization & domains","u1-4":"Scientific method & variables","u2-1":"Atoms, isotopes & ions","u2-2":"Bonds","u2-3":"Water & compounds","u2-4":"Macromolecules","u3-1":"Cell structure & theory","u3-2":"Membranes & transport","u3-3":"Cellular respiration","u3-4":"Cell division","u4-1":"Central dogma & gene expression","u4-2":"DNA & replication","u4-3":"Inheritance patterns","u4-4":"Biotechnology","u5-1":"Natural selection","u5-2":"Evidence for evolution","u5-3":"Natural selection","u5-4":"Evidence for evolution"};
+const M=(id,u,c,d,t,q,options,a,e)=>({id,u,c,d,t,ty:"mc",q,options,a,e});
+QUESTIONS.push(
+M("u1-5","u1","pos",2,"Scientific method & variables","Researchers test whether caffeine concentration changes the heart rate of water fleas. Caffeine concentration is the...",["independent variable","dependent variable","control group","constant"],0,"The independent variable is the factor the researcher deliberately changes. Heart rate is what is measured in response, so it is the dependent variable."),
+M("u1-6","u1","pos",2,"Scientific method & variables","One group of mice receives a new drug and another receives an identical-looking sugar pill. The sugar-pill group is the...",["experimental group","control group","dependent variable","hypothesis"],1,"A control group is treated the same way except for the factor being tested, which gives a baseline for comparison."),
+M("u1-7","u1","pos",1,"Types of reasoning & science","Concluding that all swans are white after seeing only white swans is an example of...",["inductive reasoning","deductive reasoning","applied science","a controlled experiment"],0,"Inductive reasoning moves from specific observations to a general conclusion, which a single new observation (a black swan) can overturn. Deductive reasoning goes from a general rule to a specific prediction."),
+M("u1-8","u1","sys",1,"Levels of organization & domains","Which list orders levels of biological organization from smallest to largest?",["Organelle, cell, tissue, organ, organism","Cell, organelle, organ, tissue, organism","Tissue, cell, organ, organelle, organism","Organ, tissue, cell, organism, organelle"],0,"Organelles make up cells, cells form tissues, tissues form organs, and organs work together in an organism."),
+M("u2-5","u2","sf",1,"Atoms, isotopes & ions","An atom that loses one electron becomes...",["a negatively charged ion","a positively charged ion","an isotope","a neutral molecule"],1,"Losing a negative electron leaves more protons than electrons, so the atom has a net positive charge (a cation)."),
+M("u2-6","u2","sf",2,"Bonds","Sodium and chloride ions in table salt are held together mainly by which type of bond?",["Nonpolar covalent","Ionic","Hydrogen","Peptide"],1,"Sodium transfers an electron to chlorine, and the resulting oppositely charged ions attract each other in an ionic bond."),
+M("u2-7","u2","sf",2,"Water & compounds","Water moving up a narrow tube against gravity depends mainly on which properties?",["Low specific heat and evaporation","Cohesion and adhesion","Density and freezing","Acidity and basicity"],1,"Cohesion (water sticking to water) and adhesion (water sticking to the tube walls), both due to hydrogen bonding, pull water upward. This underlies water transport in plants."),
+M("u2-8","u2","em",2,"Macromolecules","Which macromolecule class is the main form of long-term energy storage in animals?",["Lipids (fats)","Proteins","Nucleic acids","Monosaccharides"],0,"Fats store more energy per gram than carbohydrates or proteins, so they work well for long-term storage. Simple sugars are used for quick energy."),
+M("u3-5","u3","sf",1,"Cell structure & theory","Which statement is part of cell theory?",["All cells arise from pre-existing cells.","All cells have a nucleus.","All cells contain mitochondria.","Cells form spontaneously from nonliving matter."],0,"Cell theory says organisms are made of cells, the cell is the basic unit of life, and cells come only from existing cells. Prokaryotes lack a nucleus, so option 2 is false."),
+M("u3-6","u3","sf",2,"Membranes & transport","In the fluid mosaic model, the word mosaic refers to...",["a rigid layer of cellulose outside the membrane","the varied proteins and other molecules scattered through the phospholipid bilayer","a single layer of lipids","the pores in the nucleus"],1,"Phospholipids form a flexible, fluid bilayer, and diverse proteins, cholesterol and carbohydrates are embedded in it like the pieces of a mosaic."),
+M("u3-7","u3","em",2,"Energy & enzymes","An enzyme speeds up a reaction by...",["adding energy to the reactants","lowering the activation energy","changing the overall energy released","being used up in the reaction"],1,"Enzymes lower the activation energy barrier. They are not consumed and do not change the energy difference between reactants and products."),
+M("u3-8","u3","em",2,"Cellular respiration","Without oxygen, which process regenerates NAD+ so glycolysis can keep making a small amount of ATP?",["The Krebs cycle","The electron transport chain","Fermentation","The Calvin cycle"],2,"Fermentation (anaerobic) converts NADH back to NAD+, letting glycolysis continue, though it yields far less ATP than aerobic respiration."),
+M("u3-9","u3","em",3,"Photosynthesis","CAM plants open their stomata at night mainly to...",["release oxygen faster","take in CO2 while losing less water","absorb more light","run the light-dependent reactions"],1,"CAM plants take in CO2 at night when it is cooler and store it in organic acids, then use it during the day with stomata closed. C4 plants instead separate the steps in space."),
+M("u3-10","u3","sys",2,"Cell division","Chromosomes line up along the cell equator during which phase of mitosis?",["Prophase","Metaphase","Anaphase","Telophase"],1,"Metaphase aligns chromosomes at the cell equator. Anaphase then pulls sister chromatids apart."),
+M("u4-5","u4","info",2,"Central dogma & gene expression","Where does transcription occur in a eukaryotic cell?",["Nucleus","Ribosome","Golgi apparatus","Lysosome"],0,"Transcription copies DNA into mRNA inside the nucleus; the mRNA then moves to ribosomes for translation."),
+M("u4-6","u4","info",2,"Central dogma & gene expression","The mRNA codon AUG usually signals...",["the end of translation","the start of translation, coding for methionine","a splice site","the start of DNA replication"],1,"AUG is the usual start codon and codes for methionine. Stop codons (UAA, UAG, UGA) end translation."),
+M("u4-7","u4","info",2,"Inheritance patterns","Crossing red-flowered and white-flowered plants gives all pink offspring. This pattern is...",["complete dominance","incomplete dominance","independent assortment","a point mutation"],1,"In incomplete dominance the heterozygote shows a blend of the two parental traits, unlike complete dominance where one allele masks the other."),
+M("u4-8","u4","info",2,"Biotechnology","CRISPR-Cas9 is a tool used mainly to...",["make targeted cuts at a chosen DNA sequence","copy RNA into protein","sort cells by size","stain chromosomes"],0,"A guide RNA directs the Cas9 enzyme to a specific DNA sequence, where it cuts, allowing scientists to edit genes."),
+M("u5-5","u5","evo",2,"Natural selection","Which condition is required for evolution by natural selection?",["Heritable variation in traits that affect survival or reproduction","Individuals changing their traits on purpose","All offspring surviving","Mutations appearing only when needed"],0,"Selection needs variation, inheritance of that variation, and differential survival or reproduction. Individuals do not evolve; populations do."),
+M("u5-6","u5","evo",2,"Natural selection","Bacteria exposed to an antibiotic become mostly resistant after several generations because...",["each bacterium learns to resist it","resistant variants survive and reproduce more","the antibiotic causes helpful mutations","resistance gained by use is passed on"],1,"Resistant variants already exist by chance. The antibiotic removes susceptible cells, so resistant ones leave more offspring."),
+M("u5-7","u5","evo",3,"Natural selection","What is the main role of mutation in evolution?",["It improves populations on purpose","It creates new alleles, adding variation that selection can act on","It removes harmful alleles","It prevents genetic drift"],1,"Mutation is the ultimate source of new alleles. It is random with respect to need; selection then sorts the variation."),
+M("u5-8","u5","evo",1,"Evidence for evolution","A bat wing and a human arm share a similar bone arrangement. These structures are...",["homologous, suggesting common ancestry","analogous, from convergent evolution","vestigial","unrelated"],0,"Homologous structures share an underlying design inherited from a common ancestor even when their functions differ.")
+);
+QUESTIONS.forEach(q=>q.t=q.t||TOPICS[q.id]);
+let reviewAtt=null;
+const TOPIC_LIST=()=>[...new Set(QUESTIONS.map(q=>q.t))];
+const pctOf=s=>s.total?Math.round(100*s.correct/s.total):0;
+const band=p=>p>=80?"Strong":p>=60?"Developing":"Needs focus";
+function addTo(m,k,e,p){m[k]=m[k]||{correct:0,total:0};m[k].total+=p;m[k].correct+=e;}
+function aggBy(key){const m={};attempts.forEach(a=>Object.entries(a[key]||{}).forEach(([k,s])=>{m[k]=m[k]||{correct:0,total:0};m[k].correct+=s.correct;m[k].total+=s.total;}));return m;}
+function aggTopic(){const m={};attempts.forEach(a=>Object.entries(a.byTopic||{}).forEach(([t,s])=>{m[t]=m[t]||{correct:0,total:0,hist:[]};m[t].correct+=s.correct;m[t].total+=s.total;m[t].hist.push(pctOf(s));}));return m;}
+function trendTxt(h){if(h.length<2)return "not enough attempts for a trend yet";const last=h[h.length-1],prev=h.slice(0,-1).reduce((x,y)=>x+y,0)/(h.length-1),d=Math.round(last-prev);return d>0?`up ${d} pts vs earlier`:d<0?`down ${-d} pts vs earlier`:"steady";}
+function bars(obj,names){return Object.entries(obj).map(([k,s])=>{const p=pctOf(s);return `<div class="bar-row"><span style="width:12em">${names?names[k]:k}</span><div class="bar-track"><div class="bar-fill" style="width:${p}%"></div></div><span>${p}% (${s.correct}/${s.total})</span></div>`}).join("");}
+const pts=q=>q.pts||(q.ty==="sa"?3:2);
+function earned(q,ans){if(q.ty==="sa"){const s=testState.saSelf&&testState.saSelf[q.id];return Math.min(pts(q),Math.max(0,Number(s)||0));}return gradeQuestion(q,ans)?pts(q):0;}
+const S=(id,u,c,d,t,q,a)=>({id,u,c,d,t,ty:"sa",q,a,e:"Compare your answer with the model answer, then score yourself against the points available."});
+const L=(id,u,c,d,t,q,a)=>({...S(id,u,c,d,t,q,a),la:true,pts:6});
+QUESTIONS.push(
+M("u1-9","u1","sys",1,"Taxonomy & trophic levels","Which sequence lists taxonomic ranks from broadest to most specific?",["Domain, kingdom, phylum, class, order, family, genus, species","Species, genus, family, order, class, phylum, kingdom, domain","Kingdom, domain, class, phylum, family, order, species, genus","Genus, species, order, family, phylum, class, domain, kingdom"],0,"Each rank groups organisms more narrowly, ending at species."),
+M("u1-10","u1","em",1,"Taxonomy & trophic levels","A fungus growing on a fallen log absorbs nutrients from the dead wood. In the ecosystem it mainly acts as a...",["primary producer","decomposer","autotroph","top predator"],1,"Decomposers break down dead organic matter and return nutrients to the ecosystem."),
+M("u1-11","u1","sf",2,"Characteristics of life","A person sweating on a hot day to keep body temperature steady shows which quality of life?",["Homeostasis","Reproduction","Natural selection","Emergent properties"],0,"Homeostasis is maintaining stable internal conditions despite changes outside the body."),
+M("u1-12","u1","sys",2,"Levels of organization & domains","Consciousness arising from networks of neurons, though absent in any single neuron, is an example of...",["an emergent property","a trophic level","an adaptation","a control group"],0,"Emergent properties appear at higher levels of organization because of how the parts are arranged and interact."),
+M("u1-13","u1","pos",2,"Types of reasoning & science","How does a scientific theory differ from a hypothesis?",["A theory is a broad explanation supported by a large body of evidence; a hypothesis is a specific, testable proposed explanation.","A theory is an unproven guess; a hypothesis is a proven fact.","A theory is tested in a single experiment; a hypothesis never is.","They mean the same thing."],0,"In science, a theory is a well-supported broad explanation, not a guess. A hypothesis is a narrower proposal that can be tested."),
+M("u2-9","u2","sf",2,"pH, acids & bases","Compared with pure water (pH 7), a solution with pH 9 has...",["more hydrogen ions","fewer hydrogen ions","the same hydrogen ion concentration","no hydrogen ions"],1,"Higher pH means lower hydrogen ion concentration, so the solution is basic. Each pH unit is a tenfold change."),
+M("u2-10","u2","em",2,"Macromolecules","Dehydration synthesis joins two monomers by...",["adding a water molecule to break a bond","removing a water molecule as a covalent bond forms","transferring an electron between them","stretching a hydrogen bond"],1,"Building polymers removes water; hydrolysis adds water to break polymers back into monomers."),
+M("u2-11","u2","sf",2,"Macromolecules","Which pairing of polysaccharide and role is correct?",["Glycogen, energy storage in animals","Cellulose, energy storage in animals","Starch, structural wall of plants","Chitin, energy storage in plants"],0,"Starch and glycogen store energy (plants, animals); cellulose and chitin are structural."),
+M("u2-12","u2","sf",2,"Macromolecules","Heating an egg white makes it turn solid and opaque mainly because its proteins...",["gain extra amino acids","denature and lose their folded shape","turn into carbohydrates","form new peptide bonds"],1,"Heat disrupts the weak interactions that hold higher-order structure, so proteins unfold and clump together."),
+M("u2-13","u2","sf",2,"Macromolecules","What allows phospholipids to form a bilayer in water?",["Both ends are hydrophobic","Hydrophilic heads face the water while hydrophobic tails face inward","They contain three fatty acids","They are built from amino acids"],1,"Phospholipids have a water-loving head and water-fearing tails; the bilayer shields the tails from water."),
+M("u3-11","u3","sf",2,"Cell structure & theory","Which organelle would be especially abundant in cells that make large amounts of lipids such as steroid hormones?",["Rough ER","Smooth ER","Lysosome","Ribosome"],1,"Smooth ER synthesizes lipids and detoxifies; rough ER, studded with ribosomes, makes proteins."),
+M("u3-12","u3","evo",2,"Cell structure & theory","The idea that mitochondria and chloroplasts descend from free-living bacteria engulfed by an ancestral cell is called...",["endosymbiosis","invagination of the nucleus","binary fission","passive transport"],0,"Endosymbiosis is supported by organelle DNA, bacteria-like ribosomes, and double membranes."),
+M("u3-13","u3","sf",2,"Membranes & transport","Which substance can cross the lipid bilayer most easily without a transport protein?",["Oxygen gas","Sodium ion","Glucose","A large protein"],0,"Small nonpolar molecules slip through the hydrophobic core; ions and large polar molecules need proteins or vesicles."),
+M("u3-14","u3","sf",2,"Membranes & transport","A plant cell placed in pure water becomes firm instead of bursting mainly because of its...",["cell wall","smooth ER","lysosomes","nucleus"],0,"Water enters by osmosis, and the rigid cell wall resists expansion, creating turgor pressure."),
+S("u1-14","u1","pos",2,"Types of reasoning & science","Give two reasons scientific literacy helps people in everyday decisions.","It helps people judge whether claims about health, products, or news are backed by evidence and sound methods, and it supports informed choices on personal and public issues such as medicine, nutrition, and the environment."),
+S("u1-15","u1","pos",2,"Scientific method & variables","What does replication mean in experimental design, and why does it make conclusions stronger?","Replication means using multiple subjects per group and repeating the experiment. It reduces the influence of chance and individual differences, so a pattern is more likely to be real than a fluke."),
+S("u2-14","u2","sf",2,"Water & compounds","Name two properties of water and give one biological consequence of each.","Examples: cohesion and adhesion help pull water up plant vessels; high heat capacity stabilizes temperature; solvent ability lets nutrients and ions dissolve in blood and cells; floating ice insulates lakes so aquatic life survives."),
+S("u2-15","u2","sf",2,"Bonds","Explain why hydrogen bonds are individually weak yet important, and how they differ from covalent bonds.","A hydrogen bond is a weak attraction between a partially positive hydrogen and an electronegative atom; no electrons are shared. Covalent bonds share electron pairs and are much stronger. Many hydrogen bonds together shape water properties, DNA pairing, and protein folding."),
+S("u2-16","u2","sf",2,"Macromolecules","Compare a triglyceride and a phospholipid by structure and main role.","A triglyceride is glycerol plus three fatty acids and mainly stores energy. A phospholipid is glycerol, two fatty acids, and a phosphate group, giving a hydrophilic head and hydrophobic tails, so it forms membranes."),
+S("u2-17","u2","sf",3,"Macromolecules","What happens to a protein when it is denatured? Name two conditions that can cause it.","Denaturation is loss of the protein's folded three-dimensional shape and therefore its function, without breaking the amino acid sequence. Causes include high temperature, extreme pH, and some chemicals or salts."),
+S("u3-15","u3","sf",2,"Cell structure & theory","How do rough and smooth ER differ in structure, and what does each mainly do?","Rough ER has ribosomes on its surface and makes and modifies proteins; smooth ER lacks ribosomes and synthesizes lipids and detoxifies substances."),
+L("u1-16","u1","pos",3,"Scientific method & variables","A coach tests whether a new sports drink improves swim endurance. Twenty similar swimmers are split into two groups: one gets the drink, the other a plain drink that looks and tastes the same. Both swim the same course in the same pool. Identify the independent and dependent variables and the control group, explain why each group has several swimmers, and name two variables that must be held constant.","Independent variable: which drink is given. Dependent variable: endurance, such as laps or time completed. Control group: the plain-drink group, which gives a baseline. Several swimmers per group reduce the effect of chance and individual differences, making results more reliable. Held constant: course, pool temperature, time of day, fitness level, amount of drink."),
+L("u2-18","u2","sf",3,"Water & compounds","Explain four properties of water (cohesion and adhesion, solvent ability, temperature regulation, and ice being less dense than liquid water), and describe how hydrogen bonding explains at least two of them.","Cohesion/adhesion: hydrogen bonds link polar water molecules to each other and to surfaces. Solvent: polar water surrounds and dissolves ions and polar molecules. Temperature regulation: much heat is needed to break hydrogen bonds, so water absorbs heat with small temperature change. Ice less dense: hydrogen bonds hold molecules in an open lattice, so ice floats and insulates the water below."),
+L("u3-16","u3","sf",3,"Membranes & transport","Describe the fluid mosaic model and the function of four membrane components: phospholipids, cholesterol, proteins, and carbohydrates.","The membrane is a flexible phospholipid bilayer with embedded and attached molecules. Phospholipids form the barrier; cholesterol moderates fluidity across temperatures; proteins transport substances, receive signals, and anchor structures; carbohydrates on the outer surface help in cell recognition and signaling."),
+L("u3-17","u3","sf",3,"Membranes & transport","Predict what happens to a red blood cell placed in a hypotonic solution and then in a hypertonic solution. Explain the direction of water movement each time using solute concentration and osmosis, and say what differs in an isotonic solution.","Hypotonic: lower solute outside than inside, so water moves in by osmosis; the cell swells and may lyse. Hypertonic: higher solute outside, so water moves out and the cell shrivels. Isotonic: equal concentrations, no net water movement, so cell volume stays steady."),
+L("u3-18","u3","evo",3,"Cell structure & theory","Explain the theory of endosymbiosis: which organelles it explains, how they are proposed to have arisen, and two lines of evidence. Contrast it with infolding (invagination) of the cell membrane.","Mitochondria and chloroplasts are proposed to come from free-living bacteria engulfed by an ancestral cell and kept as partners. Evidence: their own circular DNA, bacteria-like ribosomes, double membranes, and division resembling binary fission. Invagination is inward folding of the membrane, thought to explain the nucleus and endomembrane system, not engulfed whole organisms.")
+);
+const NEWQ=[
+M("u2-19","u2","sf",1,"Carbon & functional groups","Why can carbon serve as the backbone of so many different biological molecules?",["It forms stable covalent bonds in chains, branches, and rings with many other atoms","It is the most abundant element in Earth's crust","It readily forms ionic bonds with metals","It has no electrons available to share"],0,"Carbon forms four covalent bonds, which allows chains of different lengths, branching, double bonds, and rings. This gives life an enormous variety of carbon-based molecules."),
+M("u2-20","u2","sf",1,"Carbon & functional groups","Two molecules have the same molecular formula but different arrangements of atoms. They are called...",["isotopes","isomers","ions","polymers"],1,"Isomers share a formula but differ in structure, so they can have different properties. Isotopes are atoms of one element with different neutron numbers."),
+{id:"u2-21",u:"u2",c:"sf",d:2,t:"Carbon & functional groups",ty:"ms",q:"Which of these are functional groups commonly found on biological molecules? Select all that apply.",options:["Hydroxyl","Carboxyl","Amino","Phosphate","Nucleus","Ribosome"],a:[0,1,2,3],e:"Hydroxyl, carboxyl, amino, and phosphate groups attach to a carbon backbone. A nucleus and a ribosome are cell structures, not functional groups."},
+M("u2-22","u2","sf",2,"Carbon & functional groups","Which pair of functional groups is found in every amino acid?",["Carboxyl and amino","Hydroxyl and phosphate","Phosphate and carboxyl","Hydroxyl and amino only"],0,"Each amino acid has a central carbon bonded to an amino group, a carboxyl group, a hydrogen atom, and an R group."),
+M("u2-23","u2","em",2,"Carbon & functional groups","Why are long chains of carbon and hydrogen (hydrocarbons) useful for storing energy?",["Their stable C-H covalent bonds hold chemical energy that can be released later","They dissolve easily in water","They contain many charged ions","They store the genetic code"],0,"The many C-H bonds in long hydrocarbon chains hold a lot of chemical energy, which is why fats are an efficient energy store."),
+M("u2-24","u2","sf",1,"Water & compounds","Oil does not mix with water. Oil molecules are best described as...",["hydrophobic and mostly nonpolar","hydrophilic and polar","acidic","ionic salts"],0,"Nonpolar molecules are not attracted to polar water and are repelled by it, which is what hydrophobic means."),
+M("u2-25","u2","sf",2,"Water & compounds","Why does table sugar dissolve so readily in water?",["Sugar has polar covalent bonds, so water molecules are attracted to it","Sugar is nonpolar and repelled by water","Sugar is a strong acid","Sugar is made only of ions"],0,"Water is a good solvent for substances with polar bonds because its partial charges are attracted to them."),
+M("u2-26","u2","sf",2,"pH, acids & bases","A solution's pH changes from 6 to 4. The solution has become...",["more acidic, with a higher hydrogen ion concentration","more basic, with a lower hydrogen ion concentration","neutral","unchanged in hydrogen ion concentration"],0,"Lower pH means higher hydrogen ion concentration. Pure water is 7.0, acids are below 7, and bases are above 7."),
+M("u2-27","u2","sf",2,"pH, acids & bases","Buffers are often made of a mild acid combined with a base. What do they do?",["Resist large changes in pH when acids or bases are added","Make every solution exactly neutral","Raise the hydrogen ion concentration","Remove water from solutions"],0,"A buffer absorbs or releases hydrogen ions, which keeps pH from changing sharply."),
+M("u3-19","u3","sf",2,"Membranes & transport","Oxygen and carbon dioxide cross the plasma membrane unaided, but glucose and ions generally need help. This shows the membrane is...",["selectively permeable","completely impermeable","freely permeable to everything","made of cellulose"],0,"Small nonpolar molecules pass through the bilayer, while large or polar molecules need transport proteins. The membrane therefore controls what crosses."),
+M("u3-20","u3","sf",2,"Membranes & transport","How does active transport differ from passive transport?",["Active transport moves substances against their concentration gradient and requires energy","Active transport needs no energy","Active transport moves only water","Passive transport moves substances up their gradient"],0,"Active transport moves molecules from low to high concentration using energy. Passive transport moves them down the gradient without cellular energy."),
+{id:"u3-21",u:"u3",c:"sf",d:2,t:"Membranes & transport",ty:"ms",q:"Which statements about osmosis and tonicity are correct? Select all that apply.",options:["Osmosis is the diffusion of water across a selectively permeable membrane","A cell in a hypertonic solution loses water and shrinks","A cell in a hypotonic solution gains water and may burst","Osmosis requires ATP"],a:[0,1,2],e:"Osmosis is passive. Water leaves a cell in a hypertonic solution and enters a cell in a hypotonic solution, so it uses no ATP."},
+{id:"u3-22",u:"u3",c:"sf",d:2,t:"Bulk transport",ty:"match",q:"Match each type of bulk transport to its description.",left:["Phagocytosis","Pinocytosis","Receptor-mediated endocytosis","Exocytosis"],options:["Specific molecules bind to membrane receptors before the cell pulls them in","A vesicle fuses with the membrane and releases its contents outside the cell","The membrane wraps around a large particle and engulfs it","The cell takes in fluid containing dissolved substances"],a:[2,3,0,1],e:"Phagocytosis engulfs large particles, pinocytosis takes in fluid, receptor-mediated endocytosis is selective because of receptors, and exocytosis moves material out in vesicles."},
+M("u3-23","u3","em",2,"Thermodynamics & energy","The first law of thermodynamics states that energy...",["can be transferred or transformed but not created or destroyed","is created whenever a reaction occurs","is destroyed as heat","always increases inside a cell"],0,"Energy is conserved. It changes form or moves between systems, but the total amount stays the same."),
+M("u3-24","u3","em",3,"Thermodynamics & energy","How can highly ordered living cells exist without violating the second law of thermodynamics?",["Energy transformations in organisms increase the entropy of the universe overall, even though cells stay ordered","Living things create new energy","Living things are exempt from the laws of physics","Cells have zero entropy"],0,"The second law applies to the universe as a whole. Cells keep their order by using energy, and the transformations release heat and increase total entropy."),
+M("u3-25","u3","em",2,"Thermodynamics & energy","Which describes an endergonic reaction?",["It requires a net input of energy","It releases a net amount of energy","It violates the second law","It needs no activation energy"],0,"Endergonic reactions need a net energy input; exergonic reactions release energy. Neither type violates the laws of thermodynamics."),
+M("u3-26","u3","sf",2,"Energy & enzymes","Why does each enzyme usually catalyze only one particular reaction?",["Its three-dimensional shape matches the shape of its specific substrate","It is made of lipids","It changes shape every time it works","It is consumed in the reaction"],0,"Enzyme specificity comes from the enzyme's 3-D shape fitting its substrate, which is why cells need many different enzymes."),
+M("u3-27","u3","sf",2,"Energy & enzymes","After an enzyme speeds up a reaction, the enzyme itself is...",["unchanged and able to work again","used up","converted to product","permanently denatured"],0,"Catalysts are not consumed, so one enzyme molecule can catalyze the same reaction over and over."),
+M("u3-28","u3","sf",3,"Energy & enzymes","Why can a large rise in temperature stop an enzyme from working?",["The enzyme's shape changes (denatures), so the substrate no longer fits","Heat adds more substrate","Heat makes the enzyme larger","Heat permanently lowers the activation energy"],0,"Extreme temperature or pH disrupts the bonds that hold the enzyme in shape, so the active site no longer fits the substrate."),
+S("u2-28","u2","sf",2,"Water & compounds","Explain the difference between hydrophilic and hydrophobic molecules, and give an example of a hydrophobic one.","Hydrophilic molecules are typically polar and are attracted to water; hydrophobic molecules are generally nonpolar and are repelled by water. Oil is a hydrophobic example. Some complex molecules, such as phospholipids, have both hydrophilic and hydrophobic regions."),
+S("u3-29","u3","sf",2,"Membranes & transport","Compare passive and active transport in terms of concentration gradients and energy.","Passive transport, including diffusion and osmosis, moves substances down their concentration gradient without cellular energy input. Active transport moves substances up their gradient, from low to high concentration, and requires energy."),
+L("u3-30","u3","sf",3,"Bulk transport","Describe three ways a cell can bring in larger quantities of material, and one way it removes material, mentioning vesicles.","Endocytosis brings material in: phagocytosis, where the flexible membrane surrounds and engulfs a large particle; pinocytosis, where the cell takes in fluid with dissolved substances; and receptor-mediated endocytosis, where specific molecules bind to membrane receptors before being pulled inside. The material ends up in a vesicle. Exocytosis removes material when a vesicle fuses with the plasma membrane and releases its contents outside the cell.")
+];
+NEWQ.forEach(q=>q.n=1);QUESTIONS.push(...NEWQ);
+const CHEER={
+perfect:["A perfect score! 🎉💖 Every single point is yours, and I could not be prouder of you.","100%! 🥳 All that studying paid off in the best way. I am so proud of you, my love.","Flawless! 🧬✨ You knew all of it. Go celebrate, you earned this one!","Perfect! 🎊 Look at you go. I am cheering the loudest right now."],
+high:["So close, love, and what a strong result. 💖 A few points left to polish.","Beautiful work, baby. I am proud of you. Have a look at the topics below and keep going.","You are doing really well. 🌟 The small gaps are simply the next things to learn."],
+mid:["An error does not define you, baby. Every one of these is a chance to learn something. 💕","You are making real progress, and I see how hard you work. Next time will go even better.","I am rooting for you, always. Let us take the topics below one at a time. 🌱"],
+low:["This is just one practice run, and it does not define you, baby. I believe in you completely. 💗","Hard topics take time, and you are putting in the time. I am rooting for you, and you will get it next time.","Be gentle with yourself today, love. Mistakes in practice are exactly how learning happens. 🤍"]};
+function cheer(a){const p=Math.round(100*a.score/a.total),k=p===100?"perfect":p>=80?"high":p>=60?"mid":"low",arr=CHEER[k];let h=0;for(const ch of a.date)h=(h*31+ch.charCodeAt(0))>>>0;
+const weak=Object.entries(a.byTopic||{}).filter(([t,s])=>s.correct<s.total).sort((x,y)=>pctOf(x[1])-pctOf(y[1])).slice(0,3).map(([t,s])=>`${t} (${s.correct}/${s.total} points)`);
+return `<div class="cheer${p===100?" big":""}" role="status"><b>${p===100?"Perfect score!":"A note for you"}</b>${arr[h%arr.length]}${weak.length?`<br><span style="font-size:.9rem">To review next: ${weak.join("; ")}.</span>`:""}</div>`;}
+function startNotes(){const pool=QUESTIONS.filter(q=>q.n).sort(()=>Math.random()-0.5).slice(0,12);testState={ids:pool.map(q=>q.id),idx:0,answers:{},timed:false,secondsLeft:null,timerId:null,started:Date.now(),mode:"Class-notes practice"};go("run");}
+function startMidterm(){
+  const pick=(f,n)=>QUESTIONS.filter(f).sort(()=>Math.random()-0.5).slice(0,n);
+  const pool=[...pick(q=>q.ty==="mc",20),...pick(q=>q.ty==="sa"&&!q.la,10),...pick(q=>q.la,5)];
+  const timed=document.getElementById("s-timer").checked;
+  testState={ids:pool.map(q=>q.id),idx:0,answers:{},timed,secondsLeft:timed?3600:null,timerId:null,started:Date.now(),mode:"Midterm-style"};go("run");
+}
+function recs(focus,untried,nm){const r=[];if(focus[0])r.push(`review "${focus[0][0]}" in your notes, then run a topic quiz on it`);if(focus[1])r.push(`follow with "${focus[1][0]}"`);if(untried.length)r.push(`try a topic you have not practiced yet, such as "${untried[0]}"`);if(nm)r.push(`retry your ${nm} missed question${nm===1?"":"s"} from the question bank`);r.push("take a midterm-style exam to practice pacing across question types");const s=r.join("; ");return s.charAt(0).toUpperCase()+s.slice(1)+".";}
+function attRow(a,i){const p=Math.round(100*a.score/a.total);return `<div class="row" style="justify-content:space-between;border-top:1px solid var(--border);padding:.5em 0"><span>Attempt ${i+1}, ${new Date(a.date).toLocaleDateString()}${a.mode?`, ${a.mode}`:""}</span><span>${a.score}/${a.total} (${p}%, ${band(p)})</span><button class="btn ghost" data-rev="${i}">Review</button></div><details style="padding-bottom:.5em"><summary>Performance by topic</summary>${bars(a.byTopic||{})||'<p class="empty">No topic data for this older attempt.</p>'}</details>`;}
+function viewResults2(){if(!attempts.length)return viewDashboard();return `<div class="card"><h2>Attempt history</h2>${attempts.map((a,i)=>attRow(a,i)).reverse().join("")}</div><button class="btn secondary" data-go="dashboard">Back to dashboard</button>`;}
+function startTargeted(t){const pool=QUESTIONS.filter(q=>q.t===t).sort(()=>Math.random()-0.5).slice(0,10);testState={ids:pool.map(q=>q.id),idx:0,answers:{},timed:false,secondsLeft:null,timerId:null,started:Date.now(),mode:"Topic quiz"};go("run");}
+function bindActions(){
+  document.querySelectorAll("#main [data-go]").forEach(b=>b.onclick=()=>go(b.dataset.go));
+  document.querySelectorAll("[data-topic]").forEach(b=>b.onclick=()=>startTargeted(b.dataset.topic));
+  document.querySelectorAll("[data-rev]").forEach(b=>b.onclick=()=>{reviewAtt=attempts[b.dataset.rev];go("review");render();});
+}
+function viewDashboard(){
+  if(!attempts.length)return `<div class="card"><h2>Your dashboard</h2><p class="empty">Nothing here yet, and that is perfectly okay. Take your time; I am cheering for you every step of the way. Your grade, trends and focus areas appear here after your first test and update after every attempt.</p><div class="row"><button class="btn" data-go="setup">Start a practice test</button><button class="btn secondary" data-go="bank">Browse question bank</button></div></div>`;
+  const ps=attempts.map(a=>Math.round(100*a.score/a.total)),last=attempts[attempts.length-1],lp=ps[ps.length-1];
+  const avg=Math.round(ps.reduce((x,y)=>x+y,0)/ps.length),best=Math.max(...ps);
+  const tp=aggTopic(),ranked=Object.entries(tp).map(([t,s])=>[t,pctOf(s),s]).sort((a,b)=>a[1]-b[1]);
+  const focus=ranked.filter(r=>r[1]<70).slice(0,4),strong=ranked.filter(r=>r[1]>=80).slice(-3).reverse().map(r=>r[0]);
+  const untried=TOPIC_LIST().filter(t=>!tp[t]),nm=missed.size,old=attempts.some(a=>!a.byTopic);
+  const dl=ps.length>1?`${lp-ps[ps.length-2]>=0?"+":""}${lp-ps[ps.length-2]} pts vs previous attempt. `:"";
+  return `<div class="card"><h2>Latest grade: ${lp}% <small>${last.score} of ${last.total} points, ${band(lp)}</small></h2>${cheer(last)}
+  <p>${attempts.length} attempt${attempts.length===1?"":"s"} so far. Average ${avg}%, best ${best}%. ${dl}One score is a snapshot, so watch the trend across attempts.</p>
+  <div class="trend" role="img" aria-label="Scores by attempt: ${ps.map((p,i)=>`attempt ${i+1}, ${p} percent`).join("; ")}">${ps.slice(-12).map(p=>`<div class="tcol"><span>${p}%</span><div style="height:${p*0.8}%"></div></div>`).join("")}</div>
+  <div class="row"><button class="btn secondary" data-go="results">Attempt history</button><button class="btn" data-go="setup">New practice test</button></div></div>
+  <div class="card"><h3>Where to focus next</h3>
+  ${focus.length?focus.map(([t,p,s])=>`<div class="row" style="justify-content:space-between;margin:.4em 0"><span>${t}: ${p}% (${s.correct}/${s.total}), ${trendTxt(s.hist)}</span><button class="btn secondary" data-topic="${t}">Practice topic</button></div>`).join(""):`<p>No practiced topic is below 70% right now. Keep mixing topics to stay sharp.</p>`}
+  <p><strong>Recommendations:</strong> ${recs(focus,untried,nm)}</p>${strong.length?`<p><strong>Strengths:</strong> ${strong.join("; ")}.</p>`:""}
+  ${untried.length?`<p><strong>Not practiced yet:</strong> ${untried.join("; ")}.</p>`:""}
+  ${nm?`<p>${nm} previously missed question${nm===1?"":"s"}. <button class="btn ghost" data-go="bank">Open question bank</button> and tick "Previously missed".</p>`:""}
+  ${old?`<p class="empty">Topic data only exists for tests taken since topic tracking was added.</p>`:""}</div>
+  <div class="card"><h3>Recent attempts</h3>${attempts.slice(-5).map((a,k)=>attRow(a,attempts.length-Math.min(5,attempts.length)+k)).reverse().join("")}</div><div class="card"><h3>By unit</h3>${bars(aggBy("byUnit"),UNITS)}<h3 style="margin-top:1em">By core competency</h3>${bars(aggBy("byComp"),COMP)}<h3 style="margin-top:1em">By topic</h3>${bars(Object.fromEntries(ranked.map(r=>[r[0],r[2]])))||'<p class="empty">Topic results appear after your next test.</p>'}</div>`;
+}
+function viewResults(){
+  if(!attempts.length)return viewDashboard();
+  return `<div class="card"><h2>Attempt history</h2>${attempts.map((a,i)=>[a,i]).reverse().map(([a,i])=>{const p=Math.round(100*a.score/a.total);return `<div class="row" style="justify-content:space-between;border-bottom:1px solid var(--border);padding:.5em 0"><span>Attempt ${i+1}, ${new Date(a.date).toLocaleDateString()}</span><span>${a.score}/${a.total} (${p}%, ${band(p)})</span><button class="btn ghost" data-rev="${i}">Review</button></div>`}).join("")}</div><button class="btn secondary" data-go="dashboard">Back to dashboard</button>`;
+}
+
+// ---------- state ----------
+const LS={bm:"bio101_bookmarks",miss:"bio101_missed",att:"bio101_attempts"};
+function load(k,d){try{return JSON.parse(localStorage.getItem(k))||d}catch(e){return d}}
+function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+let bookmarks=new Set(load(LS.bm,[]));
+let missed=new Set(load(LS.miss,[]));
+let attempts=load(LS.att,[]);
+function toggleBookmark(id){bookmarks.has(id)?bookmarks.delete(id):bookmarks.add(id);save(LS.bm,[...bookmarks]);}
+
+// ---------- router ----------
+const ROUTES=[["dashboard","Dashboard"],["bank","Question Bank"],["setup","Practice Test"],["results","Results"],["about","About"]];
+let testState=null; // {ids, idx, answers:{}, timerEnd, timerId}
+
+function go(r){location.hash=r;}
+window.addEventListener("hashchange",render);
+function currentRoute(){let r=(location.hash||"#dashboard").slice(1);return r.split("/")[0];}
+
+function renderNav(){
+  const r=currentRoute();
+  document.getElementById("nav").innerHTML=ROUTES.map(([key,label])=>
+    `<button class="${r===key||(key==='setup'&&(r==='run'||r==='review'))?'active':''}" data-go="${key}">${label}</button>`
+  ).join("");
+  document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>go(b.dataset.go));
+}
+
+function escapeHtml(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+
+function render(){
+  renderNav();
+  const r=currentRoute();
+  const main=document.getElementById("main");
+  if(r==="dashboard")main.innerHTML=viewDashboard();
+  else if(r==="bank")main.innerHTML=viewBank();
+  else if(r==="setup")main.innerHTML=viewSetup();
+  else if(r==="run")main.innerHTML=viewRun();
+  else if(r==="review")main.innerHTML=viewReview();
+  else if(r==="results")main.innerHTML=viewResults2();
+  else if(r==="about")main.innerHTML=viewAbout();
+  else main.innerHTML=viewDashboard();
+  wireView(r);bindActions();
+}
+
+// ---------- dashboard ----------
+function viewDashboardOld(){
+  const last=attempts[attempts.length-1];
+  let weak="";
+  if(last){
+    let entries=Object.entries(last.byUnit).map(([u,s])=>[u,s.correct/s.total]);
+    entries.sort((a,b)=>a[1]-b[1]);
+    if(entries.length)weak=UNITS[entries[0][0]];
+  }
+  return `
+  <div class="card">
+    <h2>Welcome back</h2>
+    <p>Browse the question bank, build a practice test across one or more units, and track how your scores change over time. Everything you do here is saved only in this browser.</p>
+    <div class="row">
+      <button class="btn" data-go="setup">Start a practice test</button>
+      <button class="btn secondary" data-go="bank">Browse question bank</button>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Snapshot</h3>
+    <p>${attempts.length} test attempt${attempts.length===1?"":"s"} recorded. ${last?`Most recent score: ${Math.round(100*last.score/last.total)}%.`:"Take a test to start building your history."} ${weak?`Your most recent weaker area was <strong>${weak}</strong> &ndash; consider a targeted quiz.`:""}</p>
+    ${attempts.length?`<button class="btn ghost" data-go="results">View full progress</button>`:""}
+  </div>
+  <div class="card">
+    <h3>Units covered</h3>
+    <ul>${Object.values(UNITS).map(u=>`<li>${u}</li>`).join("")}</ul>
+  </div>`;
+}
+
+// ---------- question rendering (shared by bank + test run + review) ----------
+function renderQuestionBlock(q,{mode,userAns,showAnswer}={}){
+  const bm=bookmarks.has(q.id);
+  let body="";
+  if(q.data){
+    body+=`<table><tr>${q.table.h.map(h=>`<th>${h}</th>`).join("")}</tr>${q.table.r.map(row=>`<tr>${row.map(c=>`<td>${c}</td>`).join("")}</tr>`).join("")}</table>`;
+  }
+  if(q.ty==="mc"){
+    body+=q.options.map((o,i)=>{
+      let cls="opt"; let checked=userAns===i?"checked":"";
+      if(showAnswer){ if(i===q.a)cls+=" correct"; else if(i===userAns)cls+=" wrong"; }
+      return `<label class="${cls}"><input type="radio" name="r_${q.id}" value="${i}" ${checked} ${showAnswer?"disabled":""}> ${escapeHtml(o)}</label>`;
+    }).join("");
+  } else if(q.ty==="ms"){
+    const ua=userAns||[];
+    body+=q.options.map((o,i)=>{
+      let cls="opt"; let checked=ua.includes(i)?"checked":"";
+      if(showAnswer){ if(q.a.includes(i))cls+=" correct"; else if(ua.includes(i))cls+=" wrong"; }
+      return `<label class="${cls}"><input type="checkbox" name="c_${q.id}" value="${i}" ${checked} ${showAnswer?"disabled":""}> ${escapeHtml(o)}</label>`;
+    }).join("");
+  } else if(q.ty==="match"){
+    const ua=userAns||{};
+    body+=q.left.map((l,i)=>{
+      const sel=ua[i];
+      let mark="";
+      if(showAnswer){ mark=(Number(sel)===q.a[i])?' <span style="color:var(--good)">correct</span>':' <span style="color:var(--bad)">not matched correctly</span>'; }
+      return `<div class="row" style="justify-content:space-between;margin:.3em 0"><span>${escapeHtml(l)}</span>
+        <select data-mi="${i}" name="m_${q.id}_${i}" ${showAnswer?"disabled":""}>
+          <option value="">Choose...</option>
+          ${q.options.map((o,j)=>`<option value="${j}" ${String(sel)===String(j)?"selected":""}>${escapeHtml(o)}</option>`).join("")}
+        </select>${mark}</div>`;
+    }).join("");
+  } else if(q.ty==="sa"){
+    body+=`<textarea data-sa="${q.id}" ${showAnswer?"readonly":""} placeholder="Type your answer here...">${userAns?escapeHtml(userAns):""}</textarea>`;
+    if(!showAnswer){
+      body+=`<div class="row" style="margin-top:.5em"><button class="btn secondary" data-reveal="${q.id}">Show model answer</button></div>`;
+      body+=`<div class="explain hidden" data-model="${q.id}"><strong>Model answer:</strong> ${escapeHtml(q.a)}<div class="row" style="margin-top:.5em">
+        <label class="inline">Self-score: <select data-selfpts="${q.id}"><option value="">Choose...</option>${Array.from({length:pts(q)+1},(_,i)=>`<option value="${i}" ${testState&&testState.saSelf&&testState.saSelf[q.id]===i?"selected":""}>${i} of ${pts(q)}</option>`).join("")}</select></label>
+        </div></div>`;
+    } else {
+      body+=`<div class="explain"><strong>Model answer:</strong> ${escapeHtml(q.a)}</div>`;
+    }
+  }
+  return `<div class="card qcard" data-qid="${q.id}">
+    <div class="meta"><span>${UNITS[q.u]}</span><span>${COMP[q.c]}</span><span>${DIFF[q.d]}</span>${q.n?"<span>Class notes topic</span>":""}<span>${q.la?"LONG":q.ty.toUpperCase()}, ${pts(q)} pts</span>
+      <button class="bookmark ${bm?'on':''}" data-bm="${q.id}" aria-label="Bookmark question" title="Bookmark">&#9733;</button></div>
+    <p><strong>${escapeHtml(q.q)}</strong></p>
+    ${body}
+    ${mode==="bank"?`<div class="row" style="margin-top:.6em"><button class="btn secondary" data-check="${q.id}">Check answer</button></div>
+      <div class="explain hidden" data-explain="${q.id}">${escapeHtml(q.e)}</div>`:""}
+  </div>`;
+}
+
+// ---------- question bank ----------
+function viewBank(){
+  return `<div class="card">
+    <h2>Question Bank</h2>
+    <p>Filter by unit, format, difficulty, or competency. Check your answer on any question to see a full explanation.</p>
+    <div class="row">
+      <select id="f-unit"><option value="">All units</option>${Object.entries(UNITS).map(([k,v])=>`<option value="${k}">${v}</option>`).join("")}</select>
+      <select id="f-t"><option value="">All topics</option>${TOPIC_LIST().map(t=>`<option>${t}</option>`).join("")}</select><select id="f-c"><option value="">All competencies</option>${Object.entries(COMP).map(([k,v])=>`<option value="${k}">${v}</option>`).join("")}</select><select id="f-ty"><option value="">All formats</option><option value="mc">Multiple choice</option><option value="ms">Multiple select</option><option value="match">Matching</option><option value="sa">Short answer</option></select>
+      <select id="f-d"><option value="">All difficulties</option>${Object.entries(DIFF).map(([k,v])=>`<option value="${k}">${v}</option>`).join("")}</select>
+      <label class="inline"><input type="checkbox" id="f-n"> Class notes topics</label><label class="inline"><input type="checkbox" id="f-bm"> Bookmarked only</label>
+      <label class="inline"><input type="checkbox" id="f-miss"> Previously missed</label>
+    </div>
+  </div>
+  <div id="bank-list"></div>`;
+}
+function bankFilter(){
+  const tp=document.getElementById("f-t").value,cp=document.getElementById("f-c").value,u=document.getElementById("f-unit").value,ty=document.getElementById("f-ty").value,
+    d=document.getElementById("f-d").value,bm=document.getElementById("f-bm").checked,ms=document.getElementById("f-miss").checked,nn=document.getElementById("f-n").checked;
+  return QUESTIONS.filter(q=>(!u||q.u===u)&&(!ty||q.ty===ty)&&(!tp||q.t===tp)&&(!cp||q.c===cp)&&(!d||q.d==d)&&(!bm||bookmarks.has(q.id))&&(!ms||missed.has(q.id))&&(!nn||q.n));
+}
+function refreshBankList(){
+  const list=bankFilter();
+  document.getElementById("bank-list").innerHTML=list.length?list.map(q=>renderQuestionBlock(q,{mode:"bank"})).join(""):`<p class="empty">No questions match these filters.</p>`;
+  wireQuestionCards("bank");
+}
+
+// ---------- practice test setup ----------
+function viewSetup(){
+  return `<div class="card">
+    <h2>Build a Practice Test</h2><p>You have got this. Pick whatever you would like to practice today.</p>
+    <p>Pick one or more units (leave all checked for a mixed test across the full course), choose how many questions, and optionally set a timer.</p>
+    <div class="row">${Object.entries(UNITS).map(([k,v])=>`<label class="inline"><input type="checkbox" class="su" value="${k}" checked> ${v}</label>`).join("")}</div>
+    <div class="row" style="margin-top:.8em">
+      <label class="inline">Questions: <select id="s-count"><option>5</option><option selected>10</option><option>15</option><option>20</option></select></label>
+      <label class="inline">Difficulty: <select id="s-diff"><option value="">Any</option><option value="1">Intro</option><option value="2">Core</option><option value="3">Challenge</option></select></label>
+      <label class="inline"><input type="checkbox" id="s-timer"> Timed (1 min/question)</label>
+    </div>
+    <div class="row" style="margin-top:.8em"><button class="btn" id="start-test">Start test</button></div></div><div class="card"><h3>Midterm-style exam</h3><p>Mirrors the structure of a typical midterm: 20 multiple-choice questions (2 points each), 10 short-answer (3 points each), and 5 long-answer (6 points each), 100 points in all. Short and long answers are self-scored against a model answer, so score yourself honestly. The timer option gives 60 minutes for this exam.</p><button class="btn secondary" id="start-midterm">Start midterm-style exam</button> <button class="btn ghost" id="start-notes">Practice class-notes topics</button>
+  </div>`;
+}
+function wireSetup(){
+  document.getElementById("start-midterm").onclick=startMidterm;document.getElementById("start-notes").onclick=startNotes;document.getElementById("start-test").onclick=()=>{
+    const units=[...document.querySelectorAll(".su:checked")].map(c=>c.value);
+    const diff=document.getElementById("s-diff").value;
+    const count=Number(document.getElementById("s-count").value);
+    const timed=document.getElementById("s-timer").checked;
+    let pool=QUESTIONS.filter(q=>units.includes(q.u)&&(!diff||q.d==diff));
+    pool=pool.sort(()=>Math.random()-0.5).slice(0,count);
+    if(!pool.length){alert("No questions match that selection. Try broadening the filters.");return;}
+    testState={ids:pool.map(q=>q.id),idx:0,answers:{},timed,secondsLeft:timed?pool.length*60:null,timerId:null,started:Date.now(),mode:"Custom test"};
+    go("run");
+  };
+}
+
+// ---------- test run ----------
+function viewRun(){
+  if(!testState){return `<div class="card"><p>No test in progress.</p><button class="btn" data-go="setup">Build a test</button></div>`;}
+  const q=QUESTIONS.find(x=>x.id===testState.ids[testState.idx]);
+  const pct=Math.round(100*(testState.idx)/testState.ids.length);
+  return `<div class="progresswrap"><div class="row" style="justify-content:space-between"><span>Question ${testState.idx+1} of ${testState.ids.length}</span>${testState.timed?`<span id="timer">${fmtTime(testState.secondsLeft)}</span>`:""}</div>
+    <div class="progress-track" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"><div class="progress-fill" style="width:${pct}%"></div></div></div>
+    ${renderQuestionBlock(q,{mode:"run",userAns:testState.answers[q.id]})}
+    <div class="row" style="justify-content:space-between">
+      <button class="btn ghost" id="prev-q" ${testState.idx===0?"disabled":""}>Previous</button>
+      ${testState.idx<testState.ids.length-1?`<button class="btn" id="next-q">Next</button>`:`<button class="btn" id="finish-test">Finish test</button>`}
+    </div>`;
+}
+function fmtTime(s){if(s==null)return"";const m=Math.floor(s/60),ss=s%60;return`${m}:${String(ss).padStart(2,"0")}`;}
+function captureAnswer(q){
+  const card=document.querySelector(`.qcard[data-qid="${q.id}"]`);
+  if(!card)return;
+  if(q.ty==="mc"){const r=card.querySelector("input[type=radio]:checked");testState.answers[q.id]=r?Number(r.value):undefined;}
+  else if(q.ty==="ms"){testState.answers[q.id]=[...card.querySelectorAll("input[type=checkbox]:checked")].map(c=>Number(c.value));}
+  else if(q.ty==="match"){const obj={};card.querySelectorAll("select[data-mi]").forEach(s=>{if(s.value!=="")obj[s.dataset.mi]=s.value;});testState.answers[q.id]=obj;}
+  else if(q.ty==="sa"){const t=card.querySelector("textarea");testState.answers[q.id]=t?t.value:"";testState._saSelf=testState._saSelf||{};const checked=card.querySelector("[data-self].active");}
+}
+function wireRun(){
+  if(!testState)return;
+  const q=QUESTIONS.find(x=>x.id===testState.ids[testState.idx]);
+  document.querySelectorAll("[data-bm]").forEach(b=>b.onclick=()=>{toggleBookmark(b.dataset.bm);b.classList.toggle("on");});
+  document.querySelectorAll("[data-reveal]").forEach(b=>b.onclick=()=>{document.querySelector(`[data-model="${b.dataset.reveal}"]`).classList.remove("hidden");});
+  document.querySelectorAll("[data-self]").forEach(b=>b.onclick=()=>{
+    testState.saSelf=testState.saSelf||{};testState.saSelf[b.dataset.self]=b.dataset.val==="1";
+    b.parentElement.querySelectorAll("[data-self]").forEach(x=>x.style.opacity=.5);b.style.opacity=1;
+  });
+  document.querySelectorAll("[data-selfpts]").forEach(s=>s.onchange=()=>{testState.saSelf=testState.saSelf||{};testState.saSelf[s.dataset.selfpts]=Number(s.value);});const prev=document.getElementById("prev-q"),next=document.getElementById("next-q"),fin=document.getElementById("finish-test");
+  if(prev)prev.onclick=()=>{captureAnswer(q);testState.idx--;go("run");render();};
+  if(next)next.onclick=()=>{captureAnswer(q);testState.idx++;go("run");render();};
+  if(fin)fin.onclick=()=>{captureAnswer(q);finishTest();};
+  if(testState.timed && !testState.timerId){
+    testState.timerId=setInterval(()=>{
+      testState.secondsLeft--;
+      const el=document.getElementById("timer");
+      if(el)el.textContent=fmtTime(testState.secondsLeft);
+      if(testState.secondsLeft<=0){clearInterval(testState.timerId);captureAnswer(q);finishTest();}
+    },1000);
+  }
+}
+function gradeQuestion(q,ans){
+  if(q.ty==="mc")return ans===q.a;
+  if(q.ty==="ms"){if(!ans)return false;const a=[...ans].sort().join(",");return a===[...q.a].sort().join(",");}
+  if(q.ty==="match"){if(!ans)return false;return q.left.every((l,i)=>Number(ans[i])===q.a[i]);}
+  if(q.ty==="sa")return !!(testState.saSelf&&testState.saSelf[q.id]);
+  return false;
+}
+function finishTest(){
+  if(testState.timerId)clearInterval(testState.timerId);
+  const qs=testState.ids.map(id=>QUESTIONS.find(q=>q.id===id));
+  let correct=0,poss=0;const byUnit={},byComp={},byTopic={};
+  qs.forEach(q=>{
+    const pe=earned(q,testState.answers[q.id]),pp=pts(q),ok=pe>=pp*0.6;
+    correct+=pe;poss+=pp;if(ok)missed.delete(q.id);else missed.add(q.id);
+    addTo(byUnit,q.u,pe,pp);
+    addTo(byComp,q.c,pe,pp);addTo(byTopic,q.t,pe,pp);
+  });
+  save(LS.miss,[...missed]);
+  const attempt={date:new Date().toISOString(),ids:testState.ids,answers:testState.answers,saSelf:testState.saSelf||{},score:correct,total:poss,nq:qs.length,mode:testState.mode||"Custom test",byUnit,byComp,byTopic};
+  attempts.push(attempt);save(LS.att,attempts);
+  testState.reviewAttempt=attempt;reviewAtt=attempt;
+  go("review");
+}
+
+// ---------- review ----------
+function viewReview(){
+  const a=reviewAtt||attempts[attempts.length-1];
+  if(!a)return `<div class="card"><p>No completed test to review yet.</p><button class="btn" data-go="setup">Start a test</button></div>`;
+  const qs=a.ids.map(id=>QUESTIONS.find(q=>q.id===id));
+  return `<div class="card">
+    <h2>Test Review</h2>${cheer(a)}
+    <p>Score: <strong>${a.score} / ${a.total} points</strong> (${Math.round(100*a.score/a.total)}%). A single score is a snapshot, not a full picture - check the breakdown below and in Results to see trends.</p>
+    ${bars(a.byUnit,UNITS)}${bars(a.byTopic||{})}<div class="row" style="margin-top:.6em"><button class="btn secondary" data-go="dashboard">See dashboard and trends</button><button class="btn ghost" data-go="setup">Take another test</button></div>
+  </div>
+  ${qs.map(q=>renderQuestionBlock(q,{mode:"review",userAns:(q.ty==="sa"?a.answers[q.id]:a.answers[q.id]),showAnswer:true})).join("")}`;
+}
+
+// ---------- results ----------
+function viewResultsOld(){
+  if(!attempts.length)return `<div class="card"><h2>Results</h2><p class="empty">No attempts yet. Take a practice test to start tracking your progress.</p><button class="btn" data-go="setup">Start a practice test</button></div>`;
+  const unitAgg={};
+  attempts.forEach(a=>Object.entries(a.byUnit).forEach(([u,s])=>{unitAgg[u]=unitAgg[u]||{correct:0,total:0};unitAgg[u].correct+=s.correct;unitAgg[u].total+=s.total;}));
+  return `<div class="card">
+    <h2>Progress by Unit</h2>
+    ${Object.entries(unitAgg).map(([u,s])=>{const pct=Math.round(100*s.correct/s.total);return `<div class="bar-row"><span style="width:12em">${UNITS[u]}</span><div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div><span>${pct}%</span></div>`;}).join("")}
+    <p style="margin-top:.8em">Combines all attempts to date. Use this to see which units need more practice, not as a single definitive grade.</p>
+  </div>
+  <div class="card">
+    <h2>Attempt History</h2>
+    ${attempts.slice().reverse().map((a,i)=>`<div class="row" style="justify-content:space-between;border-bottom:1px solid var(--border);padding:.4em 0">
+      <span>${new Date(a.date).toLocaleDateString()} ${new Date(a.date).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</span>
+      <span>${a.score}/${a.total} (${Math.round(100*a.score/a.total)}%)</span></div>`).join("")}
+  </div>
+  <div class="card">
+    <h3>Keep practicing</h3>
+    <p>Review bookmarked or previously missed questions any time from the Question Bank filters.</p>
+    <button class="btn secondary" data-go="bank">Open question bank</button>
+  </div>`;
+}
+
+// ---------- about ----------
+function viewAbout(){
+  return `<div class="card">
+    <h2>About this site</h2>
+    <p>This is an independent, student-made study resource organized around a publicly listed set of BIO 101 (General Biology I) topics and learning goals. It is <strong>not produced, reviewed, or endorsed by NOVA</strong>, and no questions or text are copied from any NOVA course materials - every question and explanation here was written from scratch for this project.</p>
+    <h3>Scope and assumptions</h3>
+    <p>The question bank covers a representative sample of each of the five units (Overview of Biology, Chemistry of Life, The Cell, Molecular Biology &amp; Genetics, and Evolution) rather than every possible subtopic, so it should be used alongside your actual course materials, not as a replacement for them. Matching questions assume a one-to-one pairing between the terms shown. Short-answer questions are open-ended, so they are self-graded: you compare your own answer to a model answer rather than receiving automatic scoring.</p>
+    <h3>Why this site exists</h3><p>This site was made with love to help my girlfriend with her BIO 101 coursework. The warm messages are personal; the biology explanations and feedback are meant to stay accurate and clear.</p><h3>Class notes</h3><p>Questions marked "Class notes topic" follow subjects in photos of notes taken in class (carbon and functional groups, polarity and pH, membrane transport, thermodynamics, and enzymes), supplied as a user-provided reference. Only the readable parts were used, and the questions are original. Class notes and study guides are user-provided materials, not official NOVA content.</p><h3>Alignment with the course</h3><p><strong>Study references:</strong> this update also draws on two documents supplied by the site owner, a practice midterm and a study guide for a Spring 2025 section. They were used only as references for topics, point values, and the mix of multiple-choice, short-answer, and long-answer formats. They are user-provided references, not official course materials, and course content can vary by instructor and semester.</p><p>Every question is tagged by unit, topic, and core competency, with topics matching the objectives in the publicly listed course scope. All questions are original and are not official NOVA questions. No question text or substantial wording from the supplied documents is reused here.</p><h3>How it works</h3>
+    <p>This is a single, self-contained web page - there is nothing to install and no server is required. All of your bookmarks, missed questions, and test history are stored only in this browser's local storage, which means your progress stays on this device and is not sent anywhere. Clearing your browser data will reset your history.</p>
+  </div>`;
+}
+
+// ---------- wiring ----------
+function wireQuestionCards(mode){
+  document.querySelectorAll("[data-bm]").forEach(b=>b.onclick=()=>{toggleBookmark(b.dataset.bm);b.classList.toggle("on");});
+  document.querySelectorAll("[data-reveal]").forEach(b=>b.onclick=()=>{document.querySelector(`[data-model="${b.dataset.reveal}"]`).classList.remove("hidden");});
+  document.querySelectorAll("[data-self]").forEach(b=>b.onclick=()=>{b.parentElement.querySelectorAll("[data-self]").forEach(x=>x.style.opacity=.5);b.style.opacity=1;});
+  if(mode==="bank"){
+    document.querySelectorAll("[data-check]").forEach(btn=>btn.onclick=()=>{
+      const id=btn.dataset.check,q=QUESTIONS.find(x=>x.id===id),card=document.querySelector(`.qcard[data-qid="${id}"]`);
+      let ans;
+      if(q.ty==="mc"){const r=card.querySelector("input[type=radio]:checked");ans=r?Number(r.value):undefined;}
+      else if(q.ty==="ms"){ans=[...card.querySelectorAll("input[type=checkbox]:checked")].map(c=>Number(c.value));}
+      else if(q.ty==="match"){ans={};card.querySelectorAll("select[data-mi]").forEach(s=>{if(s.value!=="")ans[s.dataset.mi]=s.value;});}
+      if(q.ty!=="sa"){
+        const ok=q.ty==="mc"?ans===q.a:q.ty==="ms"?([...ans].sort().join(",")===[...q.a].sort().join(",")):q.left.every((l,i)=>Number(ans[i])===q.a[i]);
+        if(!ok)missed.add(id);else missed.delete(id);save(LS.miss,[...missed]);
+        if(q.ty==="mc"){card.querySelectorAll("input[type=radio]").forEach((r,i)=>{r.disabled=true;const lbl=r.parentElement;if(i===q.a)lbl.classList.add("correct");else if(r.checked)lbl.classList.add("wrong");});}
+        else if(q.ty==="ms"){card.querySelectorAll("input[type=checkbox]").forEach((c,i)=>{c.disabled=true;const lbl=c.parentElement;if(q.a.includes(i))lbl.classList.add("correct");else if(c.checked)lbl.classList.add("wrong");});}
+        else if(q.ty==="match"){card.querySelectorAll("select[data-mi]").forEach(s=>{s.disabled=true;const i=s.dataset.mi;const good=Number(ans[i])===q.a[i];s.insertAdjacentHTML("afterend",good?' <span style="color:var(--good)">correct</span>':' <span style="color:var(--bad)">not quite</span>');});}
+      }
+      document.querySelector(`[data-explain="${id}"]`).classList.remove("hidden");
+    });
+  }
+}
+function wireView(r){
+  if(r==="bank"){["f-unit","f-t","f-c","f-ty","f-d","f-bm","f-miss","f-n"].forEach(id=>document.getElementById(id).onchange=refreshBankList);refreshBankList();}
+  else if(r==="setup")wireSetup();
+  else if(r==="run")wireRun();
+}
+
+render();
+</script>
+</body>
+</html>
