@@ -7,76 +7,82 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&display=swap">
 <style>
 :root{
-  --bg:#FCE4EC;--surface:#FFFFFF;--text:#182619;--muted:#55624E;--border:#D7DCC9;
-  --accent:#2F6B4F;--accent-ink:#163826;--amber:#B9793A;--good:#2F6B4F;--bad:#A8432F;--rad:6px;
+  --bg:#FFD1DC;--pink:#A23B63;--surface:#FFFFFF;--text:#2A1420;--muted:#6B4F5A;--border:#E0AFC0;
+  --accent:#FFD1DC;--accent-ink:#4A1028;--amber:#B9793A;--good:#A23B63;--bad:#A8432F;--rad:6px;
   color-scheme:light;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#3B1F2B;--surface:#171C13;--text:#E9EDE2;--muted:#A7B29B;--border:#2B331F;
-    --accent:#6FB98B;--accent-ink:#DCEBDF;--amber:#D9A05C;--good:#6FB98B;--bad:#E08A6E;
+    --bg:#3B1F2B;--pink:#EE90B3;--surface:#2A1620;--text:#FBEAF0;--muted:#D9B8C6;--border:#6B3F52;
+    --accent:#FFD1DC;--accent-ink:#3B1F2B;--amber:#D9A05C;--good:#FFD1DC;--bad:#E08A6E;
     color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#3B1F2B;--surface:#171C13;--text:#E9EDE2;--muted:#A7B29B;--border:#2B331F;
-  --accent:#6FB98B;--accent-ink:#DCEBDF;--amber:#D9A05C;--good:#6FB98B;--bad:#E08A6E;
+  --bg:#3B1F2B;--pink:#EE90B3;--surface:#2A1620;--text:#FBEAF0;--muted:#D9B8C6;--border:#6B3F52;
+  --accent:#FFD1DC;--accent-ink:#3B1F2B;--amber:#D9A05C;--good:#FFD1DC;--bad:#E08A6E;
   color-scheme:dark;
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;
   padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
-h1,h2,h3{font-family:Lora,Georgia,serif;font-weight:600;margin:0 0 .4em;color:var(--text)}
+h1,h2,h3{font-family:Lora,Georgia,serif;font-weight:600;margin:0 0 .4em;color:var(--pink)}
 h1{font-size:1.5rem}h2{font-size:1.2rem}h3{font-size:1.02rem}
 p{margin:.3em 0 .8em;max-width:62ch}
-a{color:var(--accent)}
+a{color:var(--pink)}
 header{position:sticky;top:env(safe-area-inset-top,0px);background:var(--surface);border-bottom:1px solid var(--border);z-index:5}
 .brand{display:flex;align-items:center;gap:.5em;padding:.7em 1em .2em;max-width:760px;margin:0 auto}
 .brand span.tag{font-size:.72rem;color:var(--muted);border:1px solid var(--border);border-radius:99px;padding:.1em .6em}
 nav{display:flex;gap:.2em;overflow-x:auto;padding:.3em .6em .5em;max-width:760px;margin:0 auto}
 nav button{background:none;border:none;color:var(--muted);padding:.5em .8em;border-radius:var(--rad);font-size:.92rem;cursor:pointer;white-space:nowrap}
-nav button.active{background:var(--accent);color:var(--bg)}
+nav button.active{background:var(--accent);color:var(--accent-ink);box-shadow:inset 0 0 0 1.5px var(--pink)}
 nav button:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
 main{max-width:760px;margin:0 auto;padding:1.2em 1em 3em}
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--rad);padding:1em;margin-bottom:1em}
 .row{display:flex;flex-wrap:wrap;gap:.6em;align-items:center}
-.btn{background:var(--accent);color:var(--bg);border:none;border-radius:var(--rad);padding:.55em 1.1em;font-size:.95rem;cursor:pointer}
-.btn.secondary{background:transparent;color:var(--accent);border:1px solid var(--accent)}
-.btn.ghost{background:transparent;color:var(--muted);border:1px solid var(--border)}
-select,input[type=number],textarea{background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:var(--rad);padding:.45em .6em;font-size:.92rem;font-family:inherit}
+.btn{background:var(--accent);color:var(--accent-ink);border:1.5px solid var(--pink);border-radius:var(--rad);padding:.55em 1.1em;font-size:.95rem;cursor:pointer}
+.btn.secondary{background:transparent;color:var(--pink);border:1.5px solid var(--pink)}
+.btn.ghost{background:transparent;color:var(--muted);border:1.5px solid var(--pink)}
+select,input[type=number],textarea{background:var(--surface);color:var(--text);border:1px solid var(--pink);border-radius:var(--rad);padding:.45em .6em;font-size:.92rem;font-family:inherit}
 textarea{width:100%;min-height:4.5em;resize:vertical}
 label.inline{font-size:.88rem;color:var(--muted);display:flex;align-items:center;gap:.35em}
 .meta{font-size:.82rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:.5em;margin-bottom:.6em}
 .meta span{border:1px solid var(--border);border-radius:99px;padding:.08em .65em}
 .opt{display:block;border:1px solid var(--border);border-radius:var(--rad);padding:.55em .7em;margin:.4em 0;cursor:pointer}
-.opt:hover{border-color:var(--accent)}
+.opt:hover{border-color:var(--pink)}
 .opt input{margin-right:.5em}
-.opt.correct{border-color:var(--good);background:color-mix(in srgb, var(--good) 12%, var(--surface))}
-.opt.wrong{border-color:var(--bad);background:color-mix(in srgb, var(--bad) 12%, var(--surface))}
+.opt.correct{border-color:var(--pink);box-shadow:inset 0 0 0 1px var(--pink);background:var(--accent);color:var(--accent-ink)}.opt.correct::after{content:" (correct answer)";font-weight:600}
+.opt.wrong{border-color:var(--bad);border-style:dashed;background:color-mix(in srgb, var(--bad) 12%, var(--surface))}.opt.wrong::after{content:" (your answer)";font-weight:600}
 table{border-collapse:collapse;width:100%;margin:.6em 0;font-size:.92rem}
 th,td{border:1px solid var(--border);padding:.4em .6em;text-align:left}
 .bar-row{display:flex;align-items:center;gap:.6em;margin:.4em 0}
-.bar-track{flex:1;background:var(--border);border-radius:99px;height:10px;overflow:hidden}
-.bar-fill{height:100%;background:var(--accent)}
+.bar-track{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:99px;height:10px;overflow:hidden}
+.bar-fill{height:100%;background:var(--accent);box-shadow:inset 0 0 0 1px var(--pink)}
 .progresswrap{margin-bottom:1em}
-.progress-track{background:var(--border);border-radius:99px;height:8px;overflow:hidden}
-.progress-fill{height:100%;background:var(--accent);transition:width .25s}
+.progress-track{background:var(--surface);border:1px solid var(--border);border-radius:99px;height:8px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);box-shadow:inset 0 0 0 1px var(--pink);transition:width .25s}
 footer{text-align:center;color:var(--muted);font-size:.8rem;padding:2em 1em 3em}
 .explain{background:var(--bg);border:1px dashed var(--border);border-radius:var(--rad);padding:.7em;margin-top:.6em;font-size:.92rem}
 .hidden{display:none !important}
 .bookmark{background:none;border:none;cursor:pointer;font-size:1.1rem;color:var(--muted)}
 .bookmark.on{color:var(--amber)}
 .empty{color:var(--muted);font-style:italic}
-.trend{display:flex;align-items:flex-end;gap:.4em;height:150px;margin:.8em 0;border-bottom:1px solid var(--border)}.tcol{flex:1;max-width:48px;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;font-size:.75rem;color:var(--muted)}.tcol div{width:100%;background:var(--accent);border-radius:3px 3px 0 0;min-height:2px}small{font-weight:400;color:var(--muted);font-size:.8rem}.cheer{border-left:4px solid var(--amber);background:var(--bg);padding:.7em .9em;border-radius:var(--rad);margin:.6em 0}.cheer b{display:block;margin-bottom:.2em}.cheer.big{font-size:1.15rem;border-left-width:6px;animation:pop .6s ease-out}@keyframes pop{0%{transform:scale(.96)}60%{transform:scale(1.03)}100%{transform:scale(1)}}@media(prefers-reduced-motion:reduce){.cheer.big{animation:none}}@media(max-width:480px){h1{font-size:1.3rem}}
+.trend{display:flex;align-items:flex-end;gap:.4em;height:150px;margin:.8em 0;border-bottom:1px solid var(--border)}.tcol{flex:1;max-width:48px;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;font-size:.75rem;color:var(--muted)}.tcol div{width:100%;background:var(--accent);box-shadow:inset 0 0 0 1px var(--pink);border-radius:3px 3px 0 0;min-height:2px}small{font-weight:400;color:var(--muted);font-size:.8rem}.cheer{border-left:4px solid var(--amber);background:var(--bg);padding:.7em .9em;border-radius:var(--rad);margin:.6em 0}.cheer b{display:block;margin-bottom:.2em}.cheer.big{font-size:1.15rem;border-left-width:6px;animation:pop .6s ease-out}@keyframes pop{0%{transform:scale(.96)}60%{transform:scale(1.03)}100%{transform:scale(1)}}@media(prefers-reduced-motion:reduce){.cheer.big{animation:none}}#welcome{max-width:760px;margin:0 auto;padding:0 1em}#welcome:empty{display:none}.welcome-box{display:flex;justify-content:space-between;align-items:center;gap:.6em;margin-top:.8em}
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.6em}
+.cat-btn{min-height:44px;text-align:left;background:var(--surface);color:var(--text);border:1.5px solid var(--pink);border-radius:var(--rad);padding:.6em .8em;font:inherit;font-size:.95rem;cursor:pointer}
+.cat-btn:hover{background:var(--accent);color:var(--accent-ink)}
+.cat-btn[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);font-weight:600;box-shadow:inset 0 0 0 1px var(--pink)}
+#ot-msg{border-left:5px solid var(--pink);margin:.8em 0 1em}#ot-msg p{max-width:none;font-size:1.05rem}
+#ot-msg{scroll-margin-top:9.5rem}@media(pointer:coarse){nav button{min-height:44px}}@media(max-width:480px){h1{font-size:1.3rem}}
 </style>
 </head>
 <body>
 <header>
-  <div class="brand"><h1>🧬 BIO101 4 my future nurse</h1><span class="tag">Made with love</span></div>
+  <div class="brand"><h1>🌸 BIO101 4 my future nurse</h1><span class="tag">Made with love</span></div>
   <nav id="nav"></nav>
 </header>
-<main id="main"></main>
+<div id="welcome" aria-live="polite"></div><main id="main"></main>
 <footer>Made with love to help my girlfriend with BIO 101. Independent study resource aligned to a public BIO 101 topic list. Not produced, reviewed, or endorsed by NOVA. Original questions and explanations only. See the About page for scope notes.</footer>
 <script>
 const UNITS={u1:"Overview of Biology",u2:"Chemistry of Life",u3:"The Cell",u4:"Molecular Biology & Genetics",u5:"Evolution"};
@@ -362,7 +368,7 @@ let attempts=load(LS.att,[]);
 function toggleBookmark(id){bookmarks.has(id)?bookmarks.delete(id):bookmarks.add(id);save(LS.bm,[...bookmarks]);}
 
 // ---------- router ----------
-const ROUTES=[["dashboard","Dashboard"],["bank","Question Bank"],["setup","Practice Test"],["results","Results"],["about","About"]];
+const ROUTES=[["dashboard","Dashboard"],["bank","Question Bank"],["setup","Practice Test"],["results","Results"],["overthinking","Overthinking"],["about","About"]];
 let testState=null; // {ids, idx, answers:{}, timerEnd, timerId}
 
 function go(r){location.hash=r;}
@@ -389,6 +395,7 @@ function render(){
   else if(r==="run")main.innerHTML=viewRun();
   else if(r==="review")main.innerHTML=viewReview();
   else if(r==="results")main.innerHTML=viewResults2();
+  else if(r==="overthinking")main.innerHTML=viewOverthinking();
   else if(r==="about")main.innerHTML=viewAbout();
   else main.innerHTML=viewDashboard();
   wireView(r);bindActions();
@@ -673,9 +680,49 @@ function wireView(r){
   if(r==="bank"){["f-unit","f-t","f-c","f-ty","f-d","f-bm","f-miss","f-n"].forEach(id=>document.getElementById(id).onchange=refreshBankList);refreshBankList();}
   else if(r==="setup")wireSetup();
   else if(r==="run")wireRun();
+  else if(r==="overthinking")wireOverthinking();
 }
 
-render();
+const OT=[
+{t:"Read when you're stressed",m:["Hey baby, I'm sorry to hear you're stressed. Breathe in slowly, and out even slower. You do not have to carry everything at once, ok? Pick one tiny thing, do just that, and let the rest wait. I am so proud of how much you handle, and I'm right here with you. Call me if you need me.","Hey, my love. Drop your shoulders, unclench your jaw, and drink some water. Today must have been a hard time, so let's take one step at a time. You will get through this one, like you've got before. I love you.","My baby is stressed? Let's take it slowly, ok? Pick one thing, and solve the rest when you feel better. I love you a lot. If you need me, I'll always be here, you know who to call <3."]},
+{t:"Read when you're sad",m:["I'm sorry it hurts today, baby. You do not have to explain it or fix it right now. It is okay to feel this way, your feelings are valid. I wish I could hug you this second. You are so loved, and this feeling will not last forever. Text or call me if you need.","If today feels heavy, be extra gentle with yourself, my love. Rest, cry if you need to, wrap up in something soft, eat your Takis with blue Gatorade. You matter so much to me, and I'm here whenever you want to talk or just sit together."]},
+{t:"Read when you overthink about your future",m:["You do not have to figure out your whole future today, baby. Right now you only need the next small step, and you are already taking it. Becoming a nurse is a big dream, and you are building it one day at a time. Your efforts are going to be rewarded <3.","Your mind is racing ahead, my love, but you are exactly where you need to be: studying, trying, growing. The future you will thank you for today. I believe in you, and I'm cheering for you the whole way. If you think you have to figure out everything, that's not true. You're young and there's a whole life ahead of you. I love you."]},
+{t:"Read when you overthink about us",m:["If your mind is spinning about us, come talk to me, baby. I would so much rather work through anything together than have you carry it alone. I choose you, and I'm proud to be yours. You're an amazing girlfriend and I'd rather work this out, than ever lose you.","My love, you do not have to earn your place with me. You are enough exactly as you are. If you ever feel unsure, tell me, and we will figure it out together, gently. You're everything I prayed for."]},
+{t:"Read when you feel like you're not good enough",m:["Listen to me, baby: you are smart, hardworking, and capable. One bad grade or one hard day does not define you. Look how far you have already come. I see you, and I'm so proud of you. Not only that, but you don't need to earn anything to be good enough. You already are, and I love you.","That voice saying you are not enough is wrong, baby. You keep showing up even when it is hard, and that takes real strength. You are more than enough, to me and to your future patients. To ease your mind, text or call me and I'll gladly play with you to keep you from those thoughts."]},
+{t:"Read before a test",m:["You have studied, you have practiced, and you know more than you think, baby. Take a deep breath, read each question slowly, and do your best. Whatever the score, I'm proud of you. I'm sure you'll do amazing!!!!!","Hey, my love. You are prepared. If your mind goes blank, pause, breathe, and come back to it. One question at a time. I'm cheering so loudly for you right now. I'll loght some candles for you."]},
+{t:"Read when you made a mistake",m:["Mistakes are just how learning shows up, baby. They do not define you. Take a breath, forgive yourself, and look at what you can learn from it. I'm right here, and I'm still so proud of you.","Mistakes happens to everyone, baby, even the best nurses-to-be. It does not erase how hard you work. Be as kind to yourself as you are to everyone else. I'm sure you'll come back stronger, amor mio."]},
+{t:"Read when you miss me",m:["I miss you too, meu amor. Busy days do not change how much I think about you. You're my pretty girl and I'm always thinking of you. Eu te amo. Send me a message, or close your eyes and know I'm thinking of you right now.","Missing me, meu bem? You are on my mind too always. Take care of yourself today, and know I'm rooting for you from wherever I am. Você é incrível."]}
+];
+const otLast={};
+function viewOverthinking(){
+  return `<div class="card"><h2>Overthinking</h2><p>Little notes from me to you, for the moments when your mind is loud. I'm here for you.</p>
+  <div id="ot-msg" class="card" role="region" aria-live="polite" aria-label="Your note" tabindex="-1"><p class="empty">When the world feels too heavy, pick a note below, baby. There's no wrong choice.</p></div>
+  <div class="cat-grid">${OT.map((c,i)=>`<button class="cat-btn" data-ot="${i}" aria-pressed="false">${escapeHtml(c.t)}</button>`).join("")}</div>
+  <p class="empty" style="margin-top:1em">These are heartfelt notes for my beautiful girlfriend. Sometimes life gets hard, and reassurence is needed. Knowing that, I hope these littles notes can help her heart rest.</p></div>`;
+}
+function wireOverthinking(){
+  const box=document.getElementById("ot-msg");
+  document.querySelectorAll("[data-ot]").forEach(b=>b.onclick=()=>{
+    const i=Number(b.dataset.ot),c=OT[i];let j;
+    do{j=Math.floor(Math.random()*c.m.length);}while(otLast[i]===j&&c.m.length>1);otLast[i]=j;
+    document.querySelectorAll("[data-ot]").forEach(x=>x.setAttribute("aria-pressed",x===b?"true":"false"));
+    box.innerHTML=`<h3>${escapeHtml(c.t)}</h3><p>${escapeHtml(c.m[j])}</p>`;
+    box.scrollIntoView({block:"nearest"});
+  });
+}
+const WELCOME=["You’re back, baby! Let’s start our study session.","Hey, my love! Let’s get started on our study session.","I’m so happy to see you again, love. Are you ready to begin?","Hii, my love! I’m glad you’re back. Ready to start?","Welcome back, beautiful! Your future patients are lucky to have you <3.","There you are, baby! Let’s make today’s studying feel a little lighter.","Hi, beautiful! I’m so proud of you for showing up. Let’s begin.","Look who’s here, my future nurse! Ready when you are.","Welcome back, my love. Take a deep breath, grab some water, and let’s dive in."];
+function showWelcome(){
+  if(currentRoute()==="run")return;
+  const last=Number(load("bio101_welcome_last",-1));let i;
+  do{i=Math.floor(Math.random()*WELCOME.length);}while(i+1===last&&WELCOME.length>1);
+  save("bio101_welcome_last",i+1);
+  const w=document.getElementById("welcome");
+  w.innerHTML=`<div class="cheer welcome-box" role="status"><span>${WELCOME[i]}</span><button class="bookmark" id="welcome-x" aria-label="Dismiss welcome message">&times;</button></div>`;
+  document.getElementById("welcome-x").onclick=()=>{w.innerHTML="";};
+}
+let hiddenAt=0;
+document.addEventListener("visibilitychange",()=>{if(document.hidden)hiddenAt=Date.now();else if(hiddenAt&&Date.now()-hiddenAt>300000){hiddenAt=0;showWelcome();}});
+render();showWelcome();
 </script>
 </body>
 </html>
